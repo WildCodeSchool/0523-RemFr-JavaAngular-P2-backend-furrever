@@ -1,3 +1,4 @@
+
 package com.templateproject.api.config;
 
 import org.springframework.context.annotation.Bean;
@@ -17,8 +18,8 @@ public class OpenApiConfiguration {
 
     private Info apiInfo() {
         return new Info()
-                .title("NAME OF YOUR API")
-                .description("DESCRIPTION OF YOUR API")
+                .title("Furr Ever")
+                .description("A great API to find a PetSitter!")
                 .version("1.0")
                 .contact(apiContact())
                 .license(apiLicence());
@@ -32,9 +33,8 @@ public class OpenApiConfiguration {
 
     private Contact apiContact() {
         return new Contact()
-                .name("PROJECT GROUP NAME")
-                .email("EMAIL ADDRESS OF PROJECT GROUP")
-                .url("Project repo address");
+                .name("Furr Ever Crew ")
+                .email("furrever@dontsendmail.com")
+                .url("https://github.com/WildCodeSchool/0523-RemFr-JavaAngular-P2-backend-furrever");
     }
 }
-
