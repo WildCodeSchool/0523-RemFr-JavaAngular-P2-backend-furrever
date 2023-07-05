@@ -30,19 +30,6 @@ public class Comment {
     @JoinColumn(name = "transaction_id")
     private Transaction transaction;
 
-    public Comment(
-            @NotNull String content,
-            @NotNull Integer note,
-            LocalDate date
-    ) {
-        this.content = content;
-        this.note = note;
-        this.date = date;
-    }
-
-    public Comment() {
-    }
-
     public UUID getId() {
         return id;
     }

@@ -42,36 +42,20 @@ public class User {
 
     private Boolean isPetSitter = false;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "location_id")
     private Location location;
 
     @OneToMany(mappedBy = "user")
     private List<Transaction> transactions;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Service> services;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Animal> animals;
 
-    public User(
-            @NotNull String email,
-            @NotNull String password,
-            @NotNull String firstName,
-            @NotNull String lastName,
-            Boolean isPetSitter
-    ) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.isPetSitter = isPetSitter;
-    }
-
-    public User() { }
-
-    public UUID getId() {
+      public UUID getId() {
 
         return id;
     }

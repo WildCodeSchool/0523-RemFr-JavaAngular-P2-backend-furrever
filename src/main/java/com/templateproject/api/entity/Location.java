@@ -37,19 +37,6 @@ public class Location {
     @OneToOne(mappedBy = "location")
     private User user;
 
-    public Location(
-            @NotNull String street,
-            @NotNull String city,
-            @NotNull String zipCode
-    ) {
-        this.street = street;
-        this.city = city;
-        this.zipCode = zipCode;
-    }
-
-    public Location() {
-    }
-
     public UUID getId() {
         return id;
     }
