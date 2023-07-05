@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,24 +18,26 @@ public class Animal {
     @NotNull(message = "Le prénom ne peut pas être nul.")
     @NotBlank(message = "Le prénom ne peut pas être vide.")
     private String firstName;
-    @Column(length = 255)
-    @NotNull(message = "L'espèce ne peut pas être nulle.")
-    @NotBlank(message = "L'espèce ne peut pas être vide.")
-    private String species;
+
     @NotNull(message = "La date de naissance ne peut pas être nulle.")
     @NotBlank(message = "La date de naissance ne peut pas être vide.")
-    private Date birthday;
+    private LocalDate birthday;
+
     private Float weight;
+
     @Column(length = 255)
     private String description;
 
-    public Animal(
-            @NotNull String firstName,
-            @NotNull String species,
-            @NotNull Date birthday
-    ) {
+    @ManyToOne
+    @JoinColumn(name = "species_id", nullable = false)
+    private Species species;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Animal(@NotNull String firstName, @NotNull LocalDate birthday) {
         this.firstName = firstName;
-        this.species = species;
         this.birthday = birthday;
     }
 
@@ -56,19 +60,11 @@ public class Animal {
         this.firstName = firstName;
     }
 
-    public @NotNull String getSpecies() {
-        return species;
-    }
-
-    public void setSpecies(@NotNull String species) {
-        this.species = species;
-    }
-
-    public @NotNull Date getBirthday() {
+    public @NotNull LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(@NotNull Date birthday) {
+    public void setBirthday(@NotNull LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -87,4 +83,21 @@ public class Animal {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Species getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(Species species) {
+        this.species = species;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
+

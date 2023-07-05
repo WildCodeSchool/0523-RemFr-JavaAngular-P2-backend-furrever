@@ -1,5 +1,6 @@
 package com.templateproject.api.entity;
 
+import jakarta.annotation.Resource;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,11 +42,18 @@ public class User {
 
     private Boolean isPetSitter = false;
 
+    @OneToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
     @OneToMany(mappedBy = "user")
     private List<Transaction> transactions;
 
     @OneToMany(mappedBy = "user")
     private List<Service> services;
+
+    @OneToMany(mappedBy = "user")
+    private List<Animal> animals;
 
     public User(
             @NotNull String email,
@@ -64,74 +72,92 @@ public class User {
     public User() { }
 
     public UUID getId() {
+
         return id;
     }
 
     public void setId(UUID id) {
+
         this.id = id;
     }
 
     public Boolean getPetSitter() {
+
         return isPetSitter;
     }
 
     public void setPetSitter(Boolean petSitter) {
+
         isPetSitter = petSitter;
     }
 
     public List<Transaction> getTransactions() {
+
         return transactions;
     }
 
     public void setTransactions(List<Transaction> transactions) {
+
         this.transactions = transactions;
     }
 
     public @NotNull String getEmail() {
+
         return email;
     }
 
     public void setEmail(@NotNull String email) {
+
         this.email = email;
     }
 
     public @NotNull String getPassword() {
+
         return password;
     }
 
     public void setPassword(@NotNull String password) {
+
         this.password = password;
     }
 
     public @NotNull String getFirstName() {
+
         return firstName;
     }
 
     public void setFirstName(@NotNull String firstName) {
+
         this.firstName = firstName;
     }
 
     public @NotNull String getLastName() {
+
         return lastName;
     }
 
     public void setLastName(@NotNull String lastName) {
+
         this.lastName = lastName;
     }
 
     public String getDescription() {
+
         return description;
     }
 
     public void setDescription(String description) {
+
         this.description = description;
     }
 
     public String getPicture() {
+
         return picture;
     }
 
     public void setPicture(String picture) {
+
         this.picture = picture;
     }
 
@@ -141,5 +167,21 @@ public class User {
 
     public void setServices(List<Service> services) {
         this.services = services;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public List<Animal> getAnimals() {
+        return animals;
+    }
+
+    public void setAnimals(List<Animal> animals) {
+        this.animals = animals;
     }
 }
