@@ -21,7 +21,7 @@ public class Species {
     private List<Animal> animals;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "service_id", nullable = false)
+    @JoinColumn(name = "service_id")
     private Service service;
 
     public UUID getId() {
