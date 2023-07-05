@@ -36,14 +36,6 @@ public class Animal {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Animal(@NotNull String firstName, @NotNull LocalDate birthday) {
-        this.firstName = firstName;
-        this.birthday = birthday;
-    }
-
-    public Animal() {
-    }
-
     public UUID getId() {
         return id;
     }

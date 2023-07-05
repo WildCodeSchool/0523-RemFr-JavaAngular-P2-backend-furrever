@@ -22,19 +22,12 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
     private Service service;
-    @OneToOne(mappedBy = "transaction")
+    @OneToOne(mappedBy = "transaction", cascade = CascadeType.REMOVE)
     private Comment comment;
-
-    public Transaction(@NotNull LocalDate dateStart, @NotNull LocalDate dateEnd, Boolean status) {
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.status = status;
-    }
-
-    public Transaction() { }
 
     public UUID getId() {
 
@@ -103,4 +96,5 @@ public class Transaction {
     public void setService(Service service) {
         this.service = service;
     }
+
 }

@@ -17,21 +17,12 @@ public class Species {
     @NotBlank(message = "Le nom ne peut pas être vide.")
     private String name;
 
-    @OneToMany(mappedBy = "species")
+    @OneToMany(mappedBy = "species", cascade = CascadeType.REMOVE)
     private List<Animal> animals;
 
-    @ManyToOne
-    //on spécifie dans service quelle est la clef étrangère que l'on veut mettre
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "service_id", nullable = false)
     private Service service;
-
-    public Species( @NotNull String name) {
-        this.name = name;
-    }
-
-    public Species() {
-
-    }
 
     public UUID getId() {
 

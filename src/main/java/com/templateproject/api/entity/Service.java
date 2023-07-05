@@ -36,6 +36,8 @@ public class Service {
 
     private Boolean isHealer = false;
 
+    private Boolean active = true;
+
     @OneToMany(mappedBy = "service")
     private List<Transaction> transactions;
 
@@ -45,26 +47,6 @@ public class Service {
 
     @OneToMany(mappedBy = "service")
     private List<Species> speciesList;
-
-    public Service(
-            String description,
-            @NotNull Float price,
-            @NotNull String typeService,
-            @NotNull String species,
-            Float weightMin,
-            Float weightMax,
-            Boolean isHealer
-    ) {
-        this.description = description;
-        this.price = price;
-        this.typeService = typeService;
-        this.species = species;
-        this.weightMin = weightMin;
-        this.weightMax = weightMax;
-        this.isHealer = isHealer;
-    }
-
-    public Service() { }
 
     public UUID getId() {
 
@@ -172,5 +154,13 @@ public class Service {
 
     public void setSpeciesList(List<Species> speciesList) {
         this.speciesList = speciesList;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
