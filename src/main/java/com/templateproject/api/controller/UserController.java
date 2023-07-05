@@ -31,7 +31,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable UUID id){
-        return this.userRepo.findById(id).get();
+        if(id != null){
+            Optional<User> userOptional = this.userRepo.findById(id);
+            if(userOptional.isPresent()) {
+                return userOptional.get();
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
