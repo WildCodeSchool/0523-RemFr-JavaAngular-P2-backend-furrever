@@ -19,10 +19,10 @@ public class Location {
     private String street;
 
     @Column(length = 100)
-    @NotNull(message = "Le numéro de rue ne doit pas être nulle.")
-    @NotBlank(message = "Le numéro de rue ne doit pas être vide.")
-    private String streetNumber;
+    private String streetNumber = null;
 
+    @Column(length = 255)
+    private String additionalAddress= null;
     @Column(length = 255)
     @NotNull(message = "La ville ne doit pas être nulle.")
     @NotBlank(message = "La ville ne doit pas être vide.")
@@ -39,17 +39,16 @@ public class Location {
 
     public Location(
             @NotNull String street,
-            @NotNull String streetNumber,
             @NotNull String city,
             @NotNull String zipCode
     ) {
         this.street = street;
-        this.streetNumber = streetNumber;
         this.city = city;
         this.zipCode = zipCode;
     }
 
-    public Location() { }
+    public Location() {
+    }
 
     public UUID getId() {
         return id;
@@ -69,14 +68,22 @@ public class Location {
         this.street = street;
     }
 
-    public @NotNull String getStreetNumber() {
+    public String getStreetNumber() {
 
         return streetNumber;
     }
 
-    public void setStreetNumber(@NotNull String streetNumber) {
+    public void setStreetNumber( String streetNumber) {
 
         this.streetNumber = streetNumber;
+    }
+
+    public String getAdditionalAddress() {
+        return additionalAddress;
+    }
+
+    public void setAdditionalAddress(String additionalAddress) {
+        this.additionalAddress = additionalAddress;
     }
 
     public @NotNull String getCity() {

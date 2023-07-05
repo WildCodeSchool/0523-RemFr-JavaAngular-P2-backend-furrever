@@ -16,6 +16,7 @@ public class Comment {
 
     @NotBlank(message = "La content ne peut pas être vide.")
     @NotNull(message = "La content ne peut pas être nulle.")
+    @Lob
     @Column(length = 500)
     private String content;
 
