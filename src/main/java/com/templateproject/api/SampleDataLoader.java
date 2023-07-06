@@ -49,10 +49,6 @@ public class SampleDataLoader implements CommandLineRunner {
         List<Location> locationList = this.locationData();
         List<User> userList = this.userData(locationList);
         List<User> petsitterList = this.petsitterData(locationList);
-        for (User user : userList){
-            System.out.println(user.getId());
-        }
-
     }
 
     private List<Species> speciesData() {
