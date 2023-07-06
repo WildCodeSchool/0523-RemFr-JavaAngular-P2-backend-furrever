@@ -1,6 +1,7 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -23,10 +24,12 @@ public class Species {
     private String name;
 
     @OneToMany(mappedBy = "species", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Animal> animals;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "service_id")
+    @JsonIgnore
     private Service service;
 
     public UUID getId() {

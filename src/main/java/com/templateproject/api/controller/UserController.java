@@ -59,9 +59,13 @@ public class UserController {
 
     @PutMapping("/{id}/animals/{animalId}")
     public Animal updateAnimal(@PathVariable UUID id, @PathVariable UUID animalId, @RequestBody Animal animalToModify) {
+        User user = this.userRepo
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         this.animalRepo
                 .findById(animalId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre animal n'a pas été mis à jour."));
+        animalToModify.setUser(user);
         return this.animalRepo.save(animalToModify);
     }
 
@@ -69,7 +73,7 @@ public class UserController {
     public void delete(@PathVariable UUID id, @PathVariable UUID animalId) {
         this.animalRepo
                 .findById(animalId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre animal n'a pas été supprimé."));
         this.animalRepo.deleteById(animalId);
     }
 

@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, UUID> {
-    Optional<Comment> findTop3CommentByNoteGreaterThanAndEqualOrderByDateDesc(int note);
+   // Optional<Comment> findTop3CommentByNoteGreaterThanAndEqualOrderByDateDesc(int note);
 }
 // Optional<Comment> findCommentByNoteGreaterThanAndEqualOrderByDateDescLimitedTo3(int note);
