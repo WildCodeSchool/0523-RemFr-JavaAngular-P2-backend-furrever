@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/petsitters/{id}/services")
+@RequestMapping("/api/petsitters/services")
 public class ServiceController {
 
     private final ServiceRepository serviceRepo;

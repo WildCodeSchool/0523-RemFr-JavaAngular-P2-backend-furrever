@@ -1,17 +1,22 @@
 package com.templateproject.api;
 
 import com.github.javafaker.Faker;
+import com.templateproject.api.entity.Animal;
 import com.templateproject.api.entity.Location;
 import com.templateproject.api.entity.Species;
 import com.templateproject.api.entity.User;
+import com.templateproject.api.repository.AnimalRepository;
 import com.templateproject.api.repository.LocationRepository;
 import com.templateproject.api.repository.SpeciesRepository;
 import com.templateproject.api.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -22,17 +27,20 @@ public class SampleDataLoader implements CommandLineRunner {
     private final SpeciesRepository speciesRepository;
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
+    private final AnimalRepository animalRepository;
 
 
     public SampleDataLoader(
             SpeciesRepository speciesRepository,
             UserRepository userRepository,
-            LocationRepository locationRepository
+            LocationRepository locationRepository,
+            AnimalRepository animalRepository
     ) {
         this.faker = new Faker();
         this.speciesRepository = speciesRepository;
         this.userRepository = userRepository;
         this.locationRepository = locationRepository;
+        this.animalRepository = animalRepository;
     }
 
     @Override
@@ -41,6 +49,9 @@ public class SampleDataLoader implements CommandLineRunner {
         List<Location> locationList = this.locationData();
         List<User> userList = this.userData(locationList);
         List<User> petsitterList = this.petsitterData(locationList);
+        for (User user : userList){
+            System.out.println(user.getId());
+        }
 
     }
 
@@ -88,6 +99,7 @@ public class SampleDataLoader implements CommandLineRunner {
                     user.setPassword("password");
                     user.setLocation(locationList.get(0));
                     locationList.remove(0);
+
                     return user;
                 })
                 .collect(Collectors.toList());
@@ -119,7 +131,7 @@ public class SampleDataLoader implements CommandLineRunner {
                 .mapToObj(i -> {
                     Location location = new Location();
                     location.setStreetNumber(String.valueOf(this.faker.number().numberBetween(1,1000)));
-                    location.setStreet("rue de " + faker.dragonBall().character());
+                    location.setStreet("rue de " + this.faker.dragonBall().character());
                     location.setZipCode("37540");
                     location.setCity("Saint Cyr sur Loire");
                     return location;
@@ -127,6 +139,24 @@ public class SampleDataLoader implements CommandLineRunner {
                 .collect(Collectors.toList());
         return this.locationRepository.saveAll(locationList);
     }
+
+  /*  private List<Animal> animalData(List<User> userList, List<Species> speciesList) {
+        double index = Math.random() * 50 ;
+        List<Animal> animalList = IntStream.rangeClosed(1,100)
+                .mapToObj(i -> {
+                    long minDay = LocalDate.of(2008, 1, 1).toEpochDay();
+                    long maxDay = LocalDate.of(2023, 7, 1).toEpochDay();
+                    long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
+                    LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
+                    Animal animal = new Animal();
+                    animal.setFirstName(this.faker.gameOfThrones().character());
+                    animal.setBirthday(randomDate);
+                    animal.setWeight((float) this.faker.number().numberBetween((int) 1.5, (int) 120.0));
+                    animal.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.");
+
+
+                })
+    }*/
 
 
 
