@@ -34,10 +34,10 @@ public class ServiceController {
     }
 
     @DeleteMapping("/{idService}")
-    public Service deleteService(@PathVariable UUID idService, @RequestBody Service service){
+    public void deleteService(@PathVariable UUID idService, @RequestBody Service service){
         this.serviceRepo
                 .findById(idService)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return this.serviceRepo.save(service);
+        this.serviceRepo.deleteById(idService);
     }
 }

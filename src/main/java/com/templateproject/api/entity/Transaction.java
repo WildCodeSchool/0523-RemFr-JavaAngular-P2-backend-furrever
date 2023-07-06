@@ -18,10 +18,8 @@ public class Transaction {
     @GeneratedValue (strategy = GenerationType.UUID)
     private UUID id;
     @NotNull(message = "Le nom ne peut pas être nul.")
-    @NotBlank(message = "Le nom ne peut pas être vide.")
     private LocalDate dateStart;
     @NotNull(message = "Le nom ne peut pas être nul.")
-    @NotBlank(message = "Le nom ne peut pas être vide.")
     private LocalDate dateEnd;
     private Boolean status;
     @ManyToOne

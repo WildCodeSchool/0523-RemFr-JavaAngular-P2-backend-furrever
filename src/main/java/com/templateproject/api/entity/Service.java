@@ -22,18 +22,12 @@ public class Service {
     private String description;
 
     @NotNull(message = "Le prix ne peut pas etre nul.")
-    @NotBlank(message = "Le prix ne peut pas être vide.")
     private Float price;
 
     @Column(length = 255)
     @NotNull(message = "Le service ne peut pas être nul.")
     @NotBlank(message = "Le service ne peut pas être vide.")
     private String typeService;
-
-    @Column(length = 255)
-    @NotNull(message = "L'espèce ne peut pas être nulle.")
-    @NotBlank(message = "L'espèce ne peut pas être vide.")
-    private String species;
 
     private Float weightMin;
 
@@ -93,15 +87,6 @@ public class Service {
         this.typeService = typeService;
     }
 
-    public @NotNull String getSpecies() {
-
-        return species;
-    }
-
-    public void setSpecies(@NotNull String species) {
-
-        this.species = species;
-    }
 
     public Float getWeightMin() {
 

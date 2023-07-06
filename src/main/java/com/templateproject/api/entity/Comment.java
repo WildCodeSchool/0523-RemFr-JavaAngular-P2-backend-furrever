@@ -25,7 +25,6 @@ public class Comment {
     @Column(length = 500)
     private String content;
 
-    @NotBlank(message = "La note ne peut pas être vide.")
     @NotNull(message = "La note ne peut pas être nulle.")
     private Integer note;
 

@@ -24,7 +24,6 @@ public class Animal {
     private String firstName;
 
     @NotNull(message = "La date de naissance ne peut pas être nulle.")
-    @NotBlank(message = "La date de naissance ne peut pas être vide.")
     private LocalDate birthday;
 
     private Float weight;
