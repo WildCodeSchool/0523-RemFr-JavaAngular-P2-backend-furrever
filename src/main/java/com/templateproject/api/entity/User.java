@@ -6,6 +6,7 @@ import jakarta.annotation.Resource;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.*;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique=true, length = 255)
+    @Column(unique = true, length = 255)
     @NotNull(message = "L'email ne peut pas être nul.")
     @NotBlank(message = "L'email ne peut pas être vide.")
     private String email;
@@ -60,7 +61,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Animal> animals;
 
-      public UUID getId() {
+    public UUID getId() {
 
         return id;
     }
@@ -170,7 +171,15 @@ public class User {
         return animals;
     }
 
-    public void setAnimals(List<Animal> animals) {
-        this.animals = animals;
+    public Map<String, String> toHashMap() {
+        Map<String, String> userArray = new HashMap<String, String>();
+        userArray.put("id=", String.valueOf(id));
+        userArray.put("email", email);
+        userArray.put("firstName", firstName);
+        userArray.put("lastName", lastName);
+        userArray.put("description", description);
+        userArray.put("picture", picture);
+        userArray.put("isPetSitter", String.valueOf(isPetSitter));
+        return userArray;
     }
 }
