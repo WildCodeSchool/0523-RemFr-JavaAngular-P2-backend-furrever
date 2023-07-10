@@ -249,6 +249,7 @@ public class SampleDataLoader implements CommandLineRunner {
                     comment.setContent("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.");
                     comment.setNote(this.faker.random().nextInt(2, 5));
                     comment.setTransaction(transactionListSort.get(0));
+                    comment.setDate(transactionListSort.get(0).getDateEnd());
                     transactionListSort.remove(0);
                     return  comment;
                 })

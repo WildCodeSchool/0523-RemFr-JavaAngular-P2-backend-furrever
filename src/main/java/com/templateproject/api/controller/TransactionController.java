@@ -1,16 +1,14 @@
 package com.templateproject.api.controller;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.templateproject.api.entity.Comment;
 import com.templateproject.api.entity.Transaction;
 import com.templateproject.api.repository.CommentRepository;
 import com.templateproject.api.repository.TransactionRepository;
+import com.templateproject.api.service.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -27,64 +25,68 @@ public class TransactionController {
     }
 
     @PostMapping("/")
-    public Transaction createTransaction(@RequestBody Transaction transaction){
+    @ResponseStatus(HttpStatus.CREATED)
+    public Transaction createTransaction(@RequestBody Transaction transaction) {
         return this.transactionRepo.save(transaction);
     }
 
-    @PutMapping("/{id}")
-    public Transaction updateTransaction(@PathVariable UUID id, @RequestBody Transaction transactionToModify){
-        if(id != null){
-            Optional<Transaction> transactionOptional = this.transactionRepo.findById(id);
-
-            if(transactionOptional.isPresent()){
-                Transaction transactionToUpdate = transactionOptional.get();
-                transactionToUpdate.setStatus(transactionToModify.getStatus());
-                return this.transactionRepo.save(transactionToUpdate);
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    @PutMapping("/{transactionId}")
+    public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Transaction transactionToModify) {
+        Transaction transaction = this.transactionRepo
+                .findById(transactionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été mise à jour"));
+        BeanUtils.copyNonNullProperties(transactionToModify, transaction);
+        return this.transactionRepo.save(transaction);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTransaction (@PathVariable UUID id){
-        if(id != null){
-            Optional<Transaction> transactionOptional = this.transactionRepo.findById(id);
+    @DeleteMapping("/{transactionId}")
+    public void deleteTransaction(@PathVariable UUID transactionId) {
+        Transaction transaction = this.transactionRepo
+                .findById(transactionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été supprimée."));
 
-            if(transactionOptional.isPresent()){
-                this.transactionRepo.deleteById(id);
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        this.transactionRepo.deleteById(transactionId);
     }
 
-    @PostMapping("/{id}/comments")
-    public Comment createComment(@RequestBody Comment comment){
+    @PostMapping("/{transactionId}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Comment createComment(@RequestBody Comment comment) {
         return this.commentRepo.save(comment);
     }
 
-    @PutMapping("/{id}/comments/{idComment}")
-    public Comment updateComment(@PathVariable UUID id, @PathVariable UUID idComment, @RequestBody Comment commentToModify) {
-        if (idComment != null && id != null) {
-            Optional<Comment> commentOptional = this.commentRepo.findById(idComment);
+    @PutMapping("/{transactionId}/comments/{commentId}")
+    public Comment updateComment(@PathVariable UUID transactionId, @PathVariable UUID commentId, @RequestBody Comment commentToModify) {
+        Transaction transaction = this.transactionRepo
+                .findById(transactionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été trouvée."));
 
-            if(commentOptional.isPresent()){
-                Comment commentToUpdate = commentOptional.get();
-                commentToUpdate.setContent(commentToModify.getContent());
-                return this.commentRepo.save(commentToUpdate);
-            }
+        Comment comment = this.commentRepo
+                .findById(commentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ce commentaire n'a pas été trouvé."));
+
+        if (transaction.getComment().equals(comment)) {
+            BeanUtils.copyNonNullProperties(commentToModify, comment);
+            return this.commentRepo.save(comment);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ce commentaire n'a pas été mis à jour.");
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
     }
 
-    @DeleteMapping("/{id}/comments/{idComment}")
-    public void deleteComment(@PathVariable UUID idComment, @PathVariable UUID id){
-        if(idComment != null && id != null){
-            Optional<Comment> commentOptional = this.commentRepo.findById(idComment);
+    @DeleteMapping("/{transactionId}/comments/{commentId}")
+    public void deleteComment(@PathVariable UUID commentId, @PathVariable UUID transactionId) {
+        Transaction transaction = this.transactionRepo
+                .findById(transactionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été trouvée."));
 
-            if(commentOptional.isPresent()){
-                this.commentRepo.deleteById(idComment);
-            }
+        Comment comment = this.commentRepo
+                .findById(commentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ce commentaire n'a pas été trouvé."));
+
+        if (transaction.getComment().equals(comment)) {
+            this.commentRepo.deleteById(commentId);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ce commentaire n'a pas été supprimé.");
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 }

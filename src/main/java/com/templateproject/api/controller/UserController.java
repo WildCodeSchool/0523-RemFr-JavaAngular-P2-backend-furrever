@@ -21,10 +21,10 @@ public class UserController {
     public UserController(UserRepository userRepository, AnimalRepository animalRepository) {
         this.userRepo = userRepository;
         this.animalRepo = animalRepository;
-
     }
 
     @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User user) {
         return this.userRepo.save(user);
     }
@@ -34,46 +34,61 @@ public class UserController {
         return this.userRepo.findAll();
     }
 
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable UUID id) {
+    @GetMapping("/{userId}")
+    public User getUserById(@PathVariable UUID userId) {
         return this.userRepo
-                .findById(id)
+                .findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable UUID id, @RequestBody User userToModify) {
-        User user =  this.userRepo
-                .findById(id)
+    @PutMapping("/{userId}")
+    public User updateUser(@PathVariable UUID userId, @RequestBody User userToModify) {
+        User user = this.userRepo
+                .findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         BeanUtils.copyNonNullProperties(userToModify, user);
         return this.userRepo.save(user);
     }
 
-    @PostMapping("/{id}/animals")
+    @PostMapping("/{userId}/animals")
+    @ResponseStatus(HttpStatus.CREATED)
     public Animal createAnimal(@RequestBody Animal animal) {
         return this.animalRepo.save(animal);
     }
 
-    @PutMapping("/{id}/animals/{animalId}")
-    public Animal updateAnimal(@PathVariable UUID id, @PathVariable UUID animalId, @RequestBody Animal animalToModify) {
+    @PutMapping("/{userId}/animals/{animalId}")
+    public Animal updateAnimal(@PathVariable UUID userId, @PathVariable UUID animalId, @RequestBody Animal animalToModify) {
         User user = this.userRepo
-                .findById(id)
+                .findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
-        this.animalRepo
+
+        Animal animal = this.animalRepo
                 .findById(animalId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre animal n'a pas été mis à jour."));
-        animalToModify.setUser(user);
-        return this.animalRepo.save(animalToModify);
+
+        if (user.getAnimals().contains(animal)) {
+            BeanUtils.copyNonNullProperties(animalToModify, animal);
+            return this.animalRepo.save(animal);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet animal ne vous appartient pas.");
+        }
     }
 
-    @DeleteMapping("/{id}/animals/{animalId}")
-    public void delete(@PathVariable UUID id, @PathVariable UUID animalId) {
-        this.animalRepo
+    @DeleteMapping("/{userId}/animals/{animalId}")
+    public void delete(@PathVariable UUID userId, @PathVariable UUID animalId) {
+        User user = this.userRepo
+                .findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
+
+        Animal animal = this.animalRepo
                 .findById(animalId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre animal n'a pas été supprimé."));
-        this.animalRepo.deleteById(animalId);
+
+        if (user.getAnimals().contains(animal)) {
+            this.animalRepo.deleteById(animalId);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cet animal ne vous appartient pas, vous ne pouvez pas le supprimer.");
+        }
     }
 
 }

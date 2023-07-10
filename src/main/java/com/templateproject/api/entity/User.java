@@ -2,11 +2,9 @@ package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.annotation.Resource;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.*;
 import java.util.UUID;
@@ -53,13 +51,13 @@ public class User {
     private Location location;
 
     @OneToMany(mappedBy = "user")
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Service> services;
+    private Set<Service> services = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Animal> animals;
+    private Set<Animal> animals = new HashSet<>();
 
     public UUID getId() {
 
@@ -151,11 +149,11 @@ public class User {
         this.picture = picture;
     }
 
-    public List<Service> getServices() {
+    public Set<Service> getServices() {
         return services;
     }
 
-    public void setServices(List<Service> services) {
+    public void setServices(Set<Service> services) {
         this.services = services;
     }
 
@@ -167,19 +165,11 @@ public class User {
         this.location = location;
     }
 
-    public List<Animal> getAnimals() {
+    public Set<Animal> getAnimals() {
         return animals;
     }
 
-    public Map<String, String> toHashMap() {
-        Map<String, String> userArray = new HashMap<String, String>();
-        userArray.put("id=", String.valueOf(id));
-        userArray.put("email", email);
-        userArray.put("firstName", firstName);
-        userArray.put("lastName", lastName);
-        userArray.put("description", description);
-        userArray.put("picture", picture);
-        userArray.put("isPetSitter", String.valueOf(isPetSitter));
-        return userArray;
+    public void setAnimals(Set<Animal> animals) {
+        this.animals = animals;
     }
 }
