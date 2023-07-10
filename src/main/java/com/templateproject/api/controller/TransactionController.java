@@ -31,10 +31,7 @@ public class TransactionController {
 
     @PutMapping("/{transactionId}")
     public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Transaction transactionToModify) {
-        //get current user  si petsitter ....
-        //si owner alors verifier que le statut de la transation  === null
-
-        Transaction transaction = this.transactionRepo
+          Transaction transaction = this.transactionRepo
                 .findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été mise à jour"));
         if ( /*current user == petsitter || */ transaction.getStatus() == null) {
@@ -47,7 +44,6 @@ public class TransactionController {
 
     @DeleteMapping("/{transactionId}")
     public void deleteTransaction(@PathVariable UUID transactionId) {
-
         Transaction transaction = this.transactionRepo
                 .findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été supprimée."));
@@ -56,7 +52,6 @@ public class TransactionController {
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'avez pas l'autorisation de supprimer cette transaction.");
         }
-
     }
 
     @PostMapping("/{transactionId}/comments")
