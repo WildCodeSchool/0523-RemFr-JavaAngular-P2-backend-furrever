@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/transactions")
-
 public class TransactionController {
 
     private final TransactionRepository transactionRepo;
@@ -32,20 +31,32 @@ public class TransactionController {
 
     @PutMapping("/{transactionId}")
     public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Transaction transactionToModify) {
+        //get current user  si petsitter ....
+        //si owner alors verifier que le statut de la transation  === null
+
         Transaction transaction = this.transactionRepo
                 .findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été mise à jour"));
-        BeanUtils.copyNonNullProperties(transactionToModify, transaction);
-        return this.transactionRepo.save(transaction);
+        if ( /*current user == petsitter || */ transaction.getStatus() == null) {
+            BeanUtils.copyNonNullProperties(transactionToModify, transaction);
+            return this.transactionRepo.save(transaction);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'avez pas l'autorisation de modifier cette transaction.");
+        }
     }
 
     @DeleteMapping("/{transactionId}")
     public void deleteTransaction(@PathVariable UUID transactionId) {
+
         Transaction transaction = this.transactionRepo
                 .findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été supprimée."));
+        if (transaction.getStatus() == null) {
+             this.transactionRepo.deleteById(transactionId);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'avez pas l'autorisation de supprimer cette transaction.");
+        }
 
-        this.transactionRepo.deleteById(transactionId);
     }
 
     @PostMapping("/{transactionId}/comments")
@@ -70,7 +81,6 @@ public class TransactionController {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ce commentaire n'a pas été mis à jour.");
         }
-
     }
 
     @DeleteMapping("/{transactionId}/comments/{commentId}")

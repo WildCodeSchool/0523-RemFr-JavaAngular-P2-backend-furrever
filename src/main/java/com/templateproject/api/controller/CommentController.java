@@ -2,11 +2,10 @@ package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.CommentTemplate;
 import com.templateproject.api.repository.CommentRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 @RestController
@@ -19,12 +18,7 @@ public class CommentController {
     }
 
     @GetMapping("/comments/top")
-    public List<String> getComments() {
-        List<String> CommentStringList = this.commentRepo
-                .getLastBestComments()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-       
-
+    public List<CommentTemplate> getComments() {
+        return this.commentRepo.getLastBestComments();
     }
 }

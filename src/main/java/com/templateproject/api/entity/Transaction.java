@@ -22,11 +22,11 @@ public class Transaction {
     private LocalDate dateEnd;
     private Boolean status;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
+    @JoinColumn(name = "service_id", nullable = true)
     private Service service;
     @OneToOne(mappedBy = "transaction", cascade = CascadeType.REMOVE)
     private Comment comment;

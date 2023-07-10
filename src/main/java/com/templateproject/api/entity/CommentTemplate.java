@@ -1,7 +1,10 @@
 package com.templateproject.api.entity;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 
+@Component
 public class CommentTemplate {
     private String content;
     private LocalDate date;
@@ -15,6 +18,9 @@ public class CommentTemplate {
         this.note = note;
         this.firstName = firstName;
         this.initialLastName = initialLastName;
+    }
+
+    public CommentTemplate() {
     }
 
     public String getContent() {
