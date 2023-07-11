@@ -1,15 +1,19 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
+
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -20,7 +24,6 @@ public class Animal {
     private String firstName;
 
     @NotNull(message = "La date de naissance ne peut pas être nulle.")
-    @NotBlank(message = "La date de naissance ne peut pas être vide.")
     private LocalDate birthday;
 
     private Float weight;

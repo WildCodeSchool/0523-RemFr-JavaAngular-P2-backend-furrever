@@ -1,5 +1,8 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +11,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Species {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -18,10 +24,12 @@ public class Species {
     private String name;
 
     @OneToMany(mappedBy = "species", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Animal> animals;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "service_id", nullable = false)
+    @JoinColumn(name = "service_id")
+    @JsonIgnore
     private Service service;
 
     public UUID getId() {

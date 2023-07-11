@@ -1,6 +1,7 @@
 package com.templateproject.api.entity;
 
-import jakarta.annotation.Resource;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,12 +10,15 @@ import java.util.*;
 import java.util.UUID;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique=true, length = 255)
+    @Column(unique = true, length = 255)
     @NotNull(message = "L'email ne peut pas être nul.")
     @NotBlank(message = "L'email ne peut pas être vide.")
     private String email;
@@ -47,15 +51,15 @@ public class User {
     private Location location;
 
     @OneToMany(mappedBy = "user")
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Service> services;
+    private Set<Service> services = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Animal> animals;
+    private Set<Animal> animals = new HashSet<>();
 
-      public UUID getId() {
+    public UUID getId() {
 
         return id;
     }
@@ -145,11 +149,11 @@ public class User {
         this.picture = picture;
     }
 
-    public List<Service> getServices() {
+    public Set<Service> getServices() {
         return services;
     }
 
-    public void setServices(List<Service> services) {
+    public void setServices(Set<Service> services) {
         this.services = services;
     }
 
@@ -161,11 +165,11 @@ public class User {
         this.location = location;
     }
 
-    public List<Animal> getAnimals() {
+    public Set<Animal> getAnimals() {
         return animals;
     }
 
-    public void setAnimals(List<Animal> animals) {
+    public void setAnimals(Set<Animal> animals) {
         this.animals = animals;
     }
 }

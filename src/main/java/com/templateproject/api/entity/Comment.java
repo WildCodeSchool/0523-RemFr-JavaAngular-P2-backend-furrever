@@ -1,5 +1,7 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +10,9 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Comment {
 
     @Id
@@ -20,7 +25,6 @@ public class Comment {
     @Column(length = 500)
     private String content;
 
-    @NotBlank(message = "La note ne peut pas être vide.")
     @NotNull(message = "La note ne peut pas être nulle.")
     private Integer note;
 
@@ -78,4 +82,5 @@ public class Comment {
 
         this.transaction = transaction;
     }
+
 }

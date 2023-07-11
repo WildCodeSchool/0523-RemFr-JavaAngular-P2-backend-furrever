@@ -1,30 +1,32 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Transaction {
     @Id
     @GeneratedValue (strategy = GenerationType.UUID)
     private UUID id;
     @NotNull(message = "Le nom ne peut pas être nul.")
-    @NotBlank(message = "Le nom ne peut pas être vide.")
     private LocalDate dateStart;
     @NotNull(message = "Le nom ne peut pas être nul.")
-    @NotBlank(message = "Le nom ne peut pas être vide.")
     private LocalDate dateEnd;
     private Boolean status;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
+    @JoinColumn(name = "service_id", nullable = true)
     private Service service;
     @OneToOne(mappedBy = "transaction", cascade = CascadeType.REMOVE)
     private Comment comment;
