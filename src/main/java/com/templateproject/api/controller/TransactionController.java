@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/transactions")
-@CrossOrigin("http://localhost:4200/")
 public class TransactionController {
 
     private final TransactionRepository transactionRepo;

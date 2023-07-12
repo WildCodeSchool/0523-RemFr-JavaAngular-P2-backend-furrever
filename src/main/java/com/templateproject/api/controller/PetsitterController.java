@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/petsitters")
-@CrossOrigin("http://localhost:4200/")
 public class PetsitterController {
 
     private final UserRepository userRepo;
