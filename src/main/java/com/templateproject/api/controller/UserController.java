@@ -13,7 +13,6 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
-
 public class UserController {
     private final UserRepository userRepo;
     private final AnimalRepository animalRepo;
