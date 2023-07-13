@@ -66,27 +66,27 @@ public class SampleDataLoader implements CommandLineRunner {
         List<Species> speciesList = new ArrayList<>();
 
         Species canin = new Species();
-        canin.setName("canin");
+        canin.setName("Canin");
         speciesList.add(canin);
 
         Species felin = new Species();
-        felin.setName("félin");
+        felin.setName("Félin");
         speciesList.add(felin);
 
         Species reptile = new Species();
-        reptile.setName("reptile");
+        reptile.setName("Reptile");
         speciesList.add(reptile);
 
         Species bovin = new Species();
-        bovin.setName("bovin");
+        bovin.setName("Bovin");
         speciesList.add(bovin);
 
         Species equidae = new Species();
-        equidae.setName("equidae");
+        equidae.setName("Équidé");
         speciesList.add(equidae);
 
         Species volaille = new Species();
-        volaille.setName("volaille");
+        volaille.setName("Volaille");
         speciesList.add(volaille);
 
         this.speciesRepository.saveAll(speciesList);
