@@ -1,8 +1,7 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.entity.CommentTemplate;
+import com.templateproject.api.dto.CommentTemplate;
 import com.templateproject.api.repository.CommentRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

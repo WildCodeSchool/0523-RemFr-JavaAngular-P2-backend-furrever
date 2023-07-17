@@ -1,5 +1,6 @@
 package com.templateproject.api.controller;
 
+import com.templateproject.api.entity.Service;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -27,10 +28,9 @@ public class PetsitterController {
     }
 
     @PostMapping("/search")
-    public List<User> getPetSitters() {
+    public List<Service> getPetSitters() {
         //TODO voir controller requête préparée recherche pet sitter
         return this.userRepo
-                .findAllByIsPetSitter(true)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le petsitter n'a pas été trouvé."));
+                .getPetSitterBySearch();
     }
 }
