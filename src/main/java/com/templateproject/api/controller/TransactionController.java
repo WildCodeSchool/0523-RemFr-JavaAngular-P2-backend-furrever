@@ -6,6 +6,7 @@ import com.templateproject.api.repository.CommentRepository;
 import com.templateproject.api.repository.TransactionRepository;
 import com.templateproject.api.service.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/transactions")
+@PreAuthorize("hasAnyAuthority('SCOPE_ROLE_USER', 'SCOPE_ROLE_PETSITTER')")
 public class TransactionController {
 
     private final TransactionRepository transactionRepo;
@@ -23,7 +25,7 @@ public class TransactionController {
         this.commentRepo = commentRepository;
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Transaction createTransaction(@RequestBody Transaction transaction) {
         return this.transactionRepo.save(transaction);

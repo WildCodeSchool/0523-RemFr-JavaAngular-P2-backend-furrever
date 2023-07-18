@@ -2,6 +2,7 @@ package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.Species;
 import com.templateproject.api.repository.SpeciesRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
