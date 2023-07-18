@@ -54,7 +54,8 @@ public class SampleDataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         List<Species> speciesList = this.speciesData();
         List<Location> locationList = this.locationData();
-        List<User> userList = this.userData(locationList);
+        List<Location> locationListTours = this.locationDataTours();
+        List<User> userList = this.userData(locationList, locationListTours);
         List<User> petsitterList = this.petsitterData(locationList);
         this.animalData(userList, speciesList);
         List<Service> serviceList = this.serviceData(petsitterList,speciesList);
@@ -93,7 +94,8 @@ public class SampleDataLoader implements CommandLineRunner {
         return speciesList;
     }
 
-    private List<User> userData(List<Location> locationList) {
+    private List<User> userData(List<Location> locationList, List<Location> locationListTours) {
+
         List<User> userList = IntStream.rangeClosed(1, 50)
                 .mapToObj(i -> {
                     String firstName = this.faker.name().firstName();
@@ -104,8 +106,14 @@ public class SampleDataLoader implements CommandLineRunner {
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
                     user.setEmail(firstName + lastName + "@api.com");
                     user.setPassword("password");
-                    user.setLocation(locationList.get(0));
-                    locationList.remove(0);
+                    if (this.faker.random().nextBoolean()) {
+                        user.setLocation(locationList.get(0));
+                        locationList.remove(0);
+                    } else {
+                        user.setLocation(locationListTours.get(0));
+                        locationListTours.remove(0);
+                    }
+
                     return user;
                 })
                 .collect(Collectors.toList());
@@ -144,6 +152,21 @@ public class SampleDataLoader implements CommandLineRunner {
                 })
                 .collect(Collectors.toList());
         return this.locationRepository.saveAll(locationList);
+    }
+
+    private List<Location> locationDataTours() {
+        List<Location> locationToursList = IntStream.rangeClosed(1, 70)
+                .mapToObj(i -> {
+                    Location toursLocation = new Location();
+                    toursLocation.setStreetNumber(String.valueOf(this.faker.number().numberBetween(1, 1000)));
+                    toursLocation.setStreet("rue de " + this.faker.dragonBall().character());
+                    toursLocation.setZipCode("37000");
+                    toursLocation.setCity("Tours");
+
+                    return toursLocation;
+                })
+                .collect(Collectors.toList());
+        return this.locationRepository.saveAll(locationToursList);
     }
 
     private void animalData(List<User> userList, List<Species> speciesList) {
