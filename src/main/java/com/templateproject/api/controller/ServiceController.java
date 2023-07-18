@@ -28,11 +28,11 @@ public class ServiceController {
     @PostMapping("/services")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Service createService(Principal principal, @RequestBody Service service){
+    public Service createService(Principal principal, @RequestBody Service service) {
         User petsitter = this.userRepo
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
-        if(petsitter.getPetSitter()){
+        if (petsitter.getPetSitter()) {
             service.setUser(petsitter);
             return this.serviceRepo.save(service);
         }
@@ -41,7 +41,7 @@ public class ServiceController {
 
     @PutMapping("/services/{serviceId}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
-    public Service updateService(Principal principal, @PathVariable UUID serviceId, @RequestBody Service serviceToModify){
+    public Service updateService(Principal principal, @PathVariable UUID serviceId, @RequestBody Service serviceToModify) {
         Service serviceInBdd = this.serviceRepo
                 .findById(serviceId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le service n'a pas été trouvé."));
@@ -50,7 +50,7 @@ public class ServiceController {
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
 
-        if(petsitter.getServices().contains(serviceInBdd)) {
+        if (petsitter.getServices().contains(serviceInBdd)) {
             BeanUtils.copyNonNullProperties(serviceToModify, serviceInBdd);
             return this.serviceRepo.save(serviceInBdd);
         } else {
@@ -60,7 +60,7 @@ public class ServiceController {
 
     @DeleteMapping("/services/{serviceId}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
-    public void deleteService(Principal principal, @PathVariable UUID serviceId){
+    public void deleteService(Principal principal, @PathVariable UUID serviceId) {
         User petsitter = this.userRepo
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
@@ -69,7 +69,7 @@ public class ServiceController {
                 .findById(serviceId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le service n'a pas été supprimé."));
 
-        if (petsitter.getServices().contains(serviceInBdd)){
+        if (petsitter.getServices().contains(serviceInBdd)) {
             this.serviceRepo.deleteById(serviceId);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ce service ne vous appartient pas, vous ne pouvez pas le supprimer.");

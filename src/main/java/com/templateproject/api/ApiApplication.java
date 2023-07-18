@@ -19,7 +19,6 @@ public class ApiApplication {
 	public CommandLineRunner run(
 			RoleRepository roleRepository
 	) {
-
 		return (args) -> {
 			// manually creates roles on startup
 			if (roleRepository.findByName("ROLE_USER").isEmpty()) {
