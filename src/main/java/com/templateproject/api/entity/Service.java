@@ -44,7 +44,12 @@ public class Service {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "service")
+    @ManyToMany
+    @JoinTable(
+            name = "service_species",
+            joinColumns = @JoinColumn(name = "service_id"),
+            inverseJoinColumns = @JoinColumn(name = "species_id")
+    )
     private List<Species> speciesList;
 
     public UUID getId() {

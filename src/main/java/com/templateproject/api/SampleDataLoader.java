@@ -120,7 +120,7 @@ public class SampleDataLoader implements CommandLineRunner {
         return this.userRepository.saveAll(userList);
     }
 
-    private List<User> petsitterData(List<Location> locationList, List<Location> locationListTours, ) {
+    private List<User> petsitterData(List<Location> locationList, List<Location> locationListTours) {
         List<User> userList = IntStream.rangeClosed(1, 20)
                 .mapToObj(i -> {
                     String firstName = this.faker.name().firstName();
@@ -219,7 +219,6 @@ public class SampleDataLoader implements CommandLineRunner {
         listOfSpeciesList.add(speciesList2);
         listOfSpeciesList.add(speciesList3);
         listOfSpeciesList.add(speciesList4);
-
         List<Service> serviceList = IntStream.rangeClosed(1, 80)
                 .mapToObj(i -> {
                     Collections.shuffle(petsitterList);

@@ -28,7 +28,7 @@ public class PetsitterController {
     }
 
     @PostMapping("/search")
-    public List<Service> getPetSitters() {
+    public List<User> getPetSitters() {
         //TODO voir controller requête préparée recherche pet sitter
         return this.userRepo
                 .getPetSitterBySearch();

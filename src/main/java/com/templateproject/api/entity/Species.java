@@ -27,10 +27,8 @@ public class Species {
     @JsonIgnore
     private List<Animal> animals;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "service_id")
-    @JsonIgnore
-    private Service service;
+    @ManyToMany(mappedBy = "speciesList")
+    private List<Service> serviceList;
 
     public UUID getId() {
 
@@ -60,11 +58,11 @@ public class Species {
         this.animals = animals;
     }
 
-    public Service getService() {
-        return service;
+    public List<Service> getServiceList() {
+        return serviceList;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setServiceList(List<Service> serviceList) {
+        this.serviceList = serviceList;
     }
 }
