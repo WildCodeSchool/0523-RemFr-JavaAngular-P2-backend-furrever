@@ -1,4 +1,4 @@
-package com.templateproject.api.entity;
+package com.templateproject.api.dto;
 
 import org.springframework.stereotype.Component;
 

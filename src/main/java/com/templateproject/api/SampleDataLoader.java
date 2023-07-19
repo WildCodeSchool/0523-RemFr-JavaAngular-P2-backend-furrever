@@ -47,15 +47,18 @@ public class SampleDataLoader implements CommandLineRunner {
         this.serviceRepository = serviceRepository;
         this.transactionRepository = transactionRepository;
         this.commentRepository = commentRepository;
-
     }
 
     @Override
     public void run(String... args) throws Exception {
+        if (this.speciesRepository.count() > 0){
+            return;
+        }
         List<Species> speciesList = this.speciesData();
         List<Location> locationList = this.locationData();
-        List<User> userList = this.userData(locationList);
-        List<User> petsitterList = this.petsitterData(locationList);
+        List<Location> locationListTours = this.locationDataTours();
+        List<User> userList = this.userData(locationList, locationListTours);
+        List<User> petsitterList = this.petsitterData(locationList, locationListTours);
         this.animalData(userList, speciesList);
         List<Service> serviceList = this.serviceData(petsitterList,speciesList);
         List<Transaction> transactionList = this.transactionData(userList, serviceList);
@@ -93,7 +96,7 @@ public class SampleDataLoader implements CommandLineRunner {
         return speciesList;
     }
 
-    private List<User> userData(List<Location> locationList) {
+    private List<User> userData(List<Location> locationList, List<Location> locationListTours) {
         List<User> userList = IntStream.rangeClosed(1, 50)
                 .mapToObj(i -> {
                     String firstName = this.faker.name().firstName();
@@ -104,15 +107,20 @@ public class SampleDataLoader implements CommandLineRunner {
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
                     user.setEmail(firstName + lastName + "@api.com");
                     user.setPassword("password");
-                    user.setLocation(locationList.get(0));
-                    locationList.remove(0);
+                    if (this.faker.random().nextBoolean()) {
+                        user.setLocation(locationList.get(0));
+                        locationList.remove(0);
+                    } else {
+                        user.setLocation(locationListTours.get(0));
+                        locationListTours.remove(0);
+                    }
                     return user;
                 })
                 .collect(Collectors.toList());
         return this.userRepository.saveAll(userList);
     }
 
-    private List<User> petsitterData(List<Location> locationList) {
+    private List<User> petsitterData(List<Location> locationList, List<Location> locationListTours) {
         List<User> userList = IntStream.rangeClosed(1, 20)
                 .mapToObj(i -> {
                     String firstName = this.faker.name().firstName();
@@ -124,8 +132,13 @@ public class SampleDataLoader implements CommandLineRunner {
                     user.setEmail(firstName + lastName + "@api.com");
                     user.setPassword("password");
                     user.setPetSitter(true);
-                    user.setLocation(locationList.get(0));
-                    locationList.remove(0);
+                    if (this.faker.random().nextBoolean()) {
+                        user.setLocation(locationList.get(0));
+                        locationList.remove(0);
+                    } else {
+                        user.setLocation(locationListTours.get(0));
+                        locationListTours.remove(0);
+                    }
                     return user;
                 })
                 .collect(Collectors.toList());
@@ -146,6 +159,20 @@ public class SampleDataLoader implements CommandLineRunner {
         return this.locationRepository.saveAll(locationList);
     }
 
+    private List<Location> locationDataTours() {
+        List<Location> locationToursList = IntStream.rangeClosed(1, 70)
+                .mapToObj(i -> {
+                    Location toursLocation = new Location();
+                    toursLocation.setStreetNumber(String.valueOf(this.faker.number().numberBetween(1, 1000)));
+                    toursLocation.setStreet("rue de " + this.faker.dragonBall().character());
+                    toursLocation.setZipCode("37000");
+                    toursLocation.setCity("Tours");
+                    return toursLocation;
+                })
+                .collect(Collectors.toList());
+        return this.locationRepository.saveAll(locationToursList);
+    }
+
     private void animalData(List<User> userList, List<Species> speciesList) {
         List<Animal> animalList = IntStream.rangeClosed(1, 150)
                 .mapToObj(i -> {
@@ -155,7 +182,6 @@ public class SampleDataLoader implements CommandLineRunner {
                     long maxDay = LocalDate.of(2023, 7, 1).toEpochDay();
                     long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
                     LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
-
                     Animal animal = new Animal();
                     animal.setFirstName(this.faker.gameOfThrones().character());
                     animal.setBirthday(randomDate);
@@ -191,7 +217,6 @@ public class SampleDataLoader implements CommandLineRunner {
         listOfSpeciesList.add(speciesList2);
         listOfSpeciesList.add(speciesList3);
         listOfSpeciesList.add(speciesList4);
-
         List<Service> serviceList = IntStream.rangeClosed(1, 80)
                 .mapToObj(i -> {
                     Collections.shuffle(petsitterList);
@@ -220,7 +245,6 @@ public class SampleDataLoader implements CommandLineRunner {
                     LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
                     Collections.shuffle(userList);
                     Collections.shuffle(serviceList);
-
                     Transaction transaction = new Transaction();
                     transaction.setDateStart(dateStart);
                     transaction.setDateEnd(randomDate);
@@ -241,7 +265,6 @@ public class SampleDataLoader implements CommandLineRunner {
                 transactionListSort.add(transaction);
             }
         }
-
         List<Comment> commentList = IntStream.rangeClosed(1, transactionListSort.size())
                 .mapToObj(i -> {
                     Collections.shuffle(transactionListSort);
