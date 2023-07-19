@@ -47,7 +47,6 @@ public class SampleDataLoader implements CommandLineRunner {
         this.serviceRepository = serviceRepository;
         this.transactionRepository = transactionRepository;
         this.commentRepository = commentRepository;
-
     }
 
     @Override
@@ -98,7 +97,6 @@ public class SampleDataLoader implements CommandLineRunner {
     }
 
     private List<User> userData(List<Location> locationList, List<Location> locationListTours) {
-
         List<User> userList = IntStream.rangeClosed(1, 50)
                 .mapToObj(i -> {
                     String firstName = this.faker.name().firstName();
@@ -116,7 +114,6 @@ public class SampleDataLoader implements CommandLineRunner {
                         user.setLocation(locationListTours.get(0));
                         locationListTours.remove(0);
                     }
-
                     return user;
                 })
                 .collect(Collectors.toList());
@@ -170,7 +167,6 @@ public class SampleDataLoader implements CommandLineRunner {
                     toursLocation.setStreet("rue de " + this.faker.dragonBall().character());
                     toursLocation.setZipCode("37000");
                     toursLocation.setCity("Tours");
-
                     return toursLocation;
                 })
                 .collect(Collectors.toList());
@@ -186,7 +182,6 @@ public class SampleDataLoader implements CommandLineRunner {
                     long maxDay = LocalDate.of(2023, 7, 1).toEpochDay();
                     long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
                     LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
-
                     Animal animal = new Animal();
                     animal.setFirstName(this.faker.gameOfThrones().character());
                     animal.setBirthday(randomDate);
@@ -250,7 +245,6 @@ public class SampleDataLoader implements CommandLineRunner {
                     LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
                     Collections.shuffle(userList);
                     Collections.shuffle(serviceList);
-
                     Transaction transaction = new Transaction();
                     transaction.setDateStart(dateStart);
                     transaction.setDateEnd(randomDate);
@@ -271,7 +265,6 @@ public class SampleDataLoader implements CommandLineRunner {
                 transactionListSort.add(transaction);
             }
         }
-
         List<Comment> commentList = IntStream.rangeClosed(1, transactionListSort.size())
                 .mapToObj(i -> {
                     Collections.shuffle(transactionListSort);

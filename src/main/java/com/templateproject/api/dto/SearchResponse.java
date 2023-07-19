@@ -28,7 +28,6 @@ public class SearchResponse {
         this.ratingQuantity = ratingQuantity;
     }
 
-
     public SearchResponse() {
     }
 
@@ -95,7 +94,6 @@ public class SearchResponse {
     public void setRating(Integer rating) {
         this.rating = rating;
     }
-
 
     public Integer getRatingQuantity() {
         return ratingQuantity;
