@@ -22,6 +22,6 @@ public class SpeciesController {
     public List<SpeciesResponse> getSpiecesUnique() {
         return this.SpeciesRepo
                 .findAllSpecies()
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Pas d'espece trouvé"));
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Pas d'espèce trouvée."));
     }
 }
