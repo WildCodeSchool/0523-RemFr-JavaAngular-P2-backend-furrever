@@ -236,7 +236,7 @@ public class SampleDataLoader implements CommandLineRunner {
     }
 
     private List<Transaction> transactionData(List<User> userList, List<Service> serviceList) {
-        List<Transaction> transactionList = IntStream.rangeClosed(1, 20)
+        List<Transaction> transactionList = IntStream.rangeClosed(1, 200)
                 .mapToObj(i -> {
                     long minDay = LocalDate.of(2023, 5, 1).toEpochDay();
                     long maxDay = LocalDate.of(2023, 7, 1).toEpochDay();
@@ -251,7 +251,7 @@ public class SampleDataLoader implements CommandLineRunner {
                     transaction.setStatus(this.faker.random().nextBoolean());
                     transaction.setUser(userList.get(0));
                     transaction.setService(serviceList.get(0));
-                    serviceList.remove(0);
+                 //   serviceList.remove(0);
                     return transaction;
                 })
                 .collect(Collectors.toList());

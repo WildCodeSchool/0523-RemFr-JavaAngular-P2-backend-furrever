@@ -1,10 +1,8 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.dto.SearchRequest;
-import com.templateproject.api.dto.SearchResponse;
-import com.templateproject.api.dto.SpeciesResponse;
-import com.templateproject.api.entity.Species;
-import com.templateproject.api.entity.User;
+import com.templateproject.api.dto.*;
+import com.templateproject.api.repository.CommentRepository;
+import com.templateproject.api.repository.ServiceRepository;
 import com.templateproject.api.repository.SpeciesRepository;
 import com.templateproject.api.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -20,26 +17,31 @@ import java.util.UUID;
 public class PetsitterController {
 
     private final UserRepository userRepo;
-    private  final SpeciesRepository speciesRepo;
+    private final CommentRepository commentRepo;
+    private final SpeciesRepository speciesRepo;
+    private final ServiceRepository serviceRepo;
 
-    public PetsitterController(UserRepository userRepository, SpeciesRepository speciesRepo) {
+    public PetsitterController(UserRepository userRepository, CommentRepository commentRepo, SpeciesRepository speciesRepo, ServiceRepository serviceRepo) {
         this.userRepo = userRepository;
+        this.commentRepo = commentRepo;
         this.speciesRepo = speciesRepo;
+        this.serviceRepo = serviceRepo;
     }
 
     @GetMapping("/{petsitterId}")
-    public User getPetSitterById(@PathVariable UUID petsitterId) {
-        return this.userRepo
-                .findUserByIdAndIsPetSitter(petsitterId, true)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le petsitter n'a pas été trouvé."));
+    public PetSitterProfileResponse getPetSitterById(@PathVariable UUID petsitterId) {
+        PetSitterProfile petSitterProfile = this.userRepo.getPetSitterById(petsitterId);
+        List<CommentTemplate> commentTemplateList = this.commentRepo.getCommentsByPetsitterId(petsitterId);
+        List<ServiceTemplate> serviceTemplateList = this.serviceRepo.getServicesByPetsitterId(petsitterId);
+        return new PetSitterProfileResponse(petSitterProfile, commentTemplateList, serviceTemplateList);
     }
 
     @PostMapping("/search")
     public List<SearchResponse> getPetSitters(@RequestBody SearchRequest searchRequest) {
-        if (searchRequest.getCity() == null ){
+        if (searchRequest.getCity() == null) {
             searchRequest.setCity("Paris");
         }
-        if (searchRequest.getTypeService() == null ){
+        if (searchRequest.getTypeService() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nous n'avons pas trouvé le type de service demandé.");
         }
         return this.userRepo
