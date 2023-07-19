@@ -1,5 +1,7 @@
 package com.templateproject.api.controller;
 
+import com.templateproject.api.dto.SearchRequest;
+import com.templateproject.api.dto.SearchResponse;
 import com.templateproject.api.entity.Service;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.UserRepository;
@@ -28,9 +30,9 @@ public class PetsitterController {
     }
 
     @PostMapping("/search")
-    public List<User> getPetSitters() {
+    public List<SearchResponse> getPetSitters(@RequestBody SearchRequest searchRequest) {
         //TODO voir controller requête préparée recherche pet sitter
         return this.userRepo
-                .getPetSitterBySearch();
+                .getPetSitterBySearch(searchRequest.getCity(), searchRequest.getTypeService(), searchRequest.getSpeciesList() );
     }
 }

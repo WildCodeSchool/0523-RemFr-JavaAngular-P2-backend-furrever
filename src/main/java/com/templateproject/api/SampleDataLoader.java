@@ -52,6 +52,9 @@ public class SampleDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (this.speciesRepository.count() > 0){
+            return;
+        }
         List<Species> speciesList = this.speciesData();
         List<Location> locationList = this.locationData();
         List<Location> locationListTours = this.locationDataTours();
