@@ -1,12 +1,10 @@
 package com.templateproject.api.dto;
 
-import com.templateproject.api.entity.Species;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 
 @Component
 public class ServiceTemplate {
@@ -39,7 +37,6 @@ public class ServiceTemplate {
     public void setId(UUID id) {
         this.id = id;
     }
-
 
     public List<SpeciesResponse> getSpeciesList() {
         return speciesList;
