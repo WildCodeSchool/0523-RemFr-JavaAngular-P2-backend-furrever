@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, UUID> {
-    @Query("SELECT new com.templateproject.api.dto.ServiceTemplate (s.description, s.price, s.typeService, CAST(s.weightMin AS Float ), CAST(s.weightMax as Float), s.isHealer)" +
+    @Query("SELECT new com.templateproject.api.dto.ServiceTemplate (s.id, s.description, s.price, s.typeService, CAST(s.weightMin AS Float ), CAST(s.weightMax as Float), s.isHealer)" +
            "FROM Service s JOIN s.user u " +
            "WHERE u.id = :id AND u.isPetSitter")
     List<ServiceTemplate> getServicesByPetsitterId(@Param("id") UUID id);

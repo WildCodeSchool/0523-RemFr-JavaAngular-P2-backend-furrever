@@ -3,19 +3,24 @@ package com.templateproject.api.dto;
 import com.templateproject.api.entity.Species;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+
 @Component
 public class ServiceTemplate {
-
+    private UUID id;
     private String description;
     private Float price;
-   // private List<Species> speciesList;
     private String typeService;
     private Float weightMin;
     private Float weightMax;
     private Boolean isHealer;
+    private List<SpeciesResponse> speciesList = new ArrayList<>();
 
-    public ServiceTemplate(String description, Float price, String typeService, Float weightMin, Float weightMax, Boolean isHealer) {
+    public ServiceTemplate(UUID id, String description, Float price, String typeService, Float weightMin, Float weightMax, Boolean isHealer) {
+        this.id = id;
         this.description = description;
         this.price = price;
         this.typeService = typeService;
@@ -25,6 +30,23 @@ public class ServiceTemplate {
     }
 
     public ServiceTemplate() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+
+    public List<SpeciesResponse> getSpeciesList() {
+        return speciesList;
+    }
+
+    public void setSpeciesList(List<SpeciesResponse> speciesList) {
+        this.speciesList = speciesList;
     }
 
     public String getDescription() {

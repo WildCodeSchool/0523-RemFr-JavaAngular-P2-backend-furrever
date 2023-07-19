@@ -251,7 +251,6 @@ public class SampleDataLoader implements CommandLineRunner {
                     transaction.setStatus(this.faker.random().nextBoolean());
                     transaction.setUser(userList.get(0));
                     transaction.setService(serviceList.get(0));
-                 //   serviceList.remove(0);
                     return transaction;
                 })
                 .collect(Collectors.toList());

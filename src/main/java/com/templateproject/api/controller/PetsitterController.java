@@ -1,6 +1,7 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.dto.*;
+import com.templateproject.api.entity.Species;
 import com.templateproject.api.repository.CommentRepository;
 import com.templateproject.api.repository.ServiceRepository;
 import com.templateproject.api.repository.SpeciesRepository;
@@ -33,6 +34,10 @@ public class PetsitterController {
         PetSitterProfile petSitterProfile = this.userRepo.getPetSitterById(petsitterId);
         List<CommentTemplate> commentTemplateList = this.commentRepo.getCommentsByPetsitterId(petsitterId);
         List<ServiceTemplate> serviceTemplateList = this.serviceRepo.getServicesByPetsitterId(petsitterId);
+        for (ServiceTemplate service : serviceTemplateList){
+            List<SpeciesResponse> speciesResponseList = this.speciesRepo.findSpeciesByServiceId(service.getId());
+            service.setSpeciesList(speciesResponseList);
+        }
         return new PetSitterProfileResponse(petSitterProfile, commentTemplateList, serviceTemplateList);
     }
 
