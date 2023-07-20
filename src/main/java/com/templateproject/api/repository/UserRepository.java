@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    @Query("SELECT new com.templateproject.api.dto.PetSitterProfile(u.id, u.email, u.firstName, u.lastName, u.description, u.picture, l.street, l.city, l.zipCode) " +
+    @Query(value = "SELECT new com.templateproject.api.dto.PetSitterProfile(u.id, u.email, u.firstName, u.lastName, u.description, u.picture, l.street, l.city, l.zipCode) " +
             "FROM User u JOIN u.location l " +
             "WHERE u.isPetSitter AND u.id = :id")
     PetSitterProfile getPetSitterById(@Param("id") UUID id);
