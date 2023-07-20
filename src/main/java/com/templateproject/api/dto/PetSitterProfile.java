@@ -12,17 +12,47 @@ public class PetSitterProfile {
     private String lastname;
     private String description;
     private String picture;
+    private String street;
+    private String city;
+    private String zipCode;
 
-    public PetSitterProfile(UUID idPetterSitter, String email, String firstname, String lastname, String description, String picture) {
+    public PetSitterProfile(UUID idPetterSitter, String email, String firstname, String lastname, String description, String picture, String street, String city, String zipCode) {
         this.idPetterSitter = idPetterSitter;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
         this.description = description;
         this.picture = picture;
+        this.street = street;
+        this.city = city;
+        this.zipCode = zipCode;
     }
 
     public PetSitterProfile() {
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public UUID getIdPetterSitter() {
