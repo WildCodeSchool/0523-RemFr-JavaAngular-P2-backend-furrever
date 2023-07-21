@@ -43,8 +43,8 @@ public class PetsitterController {
 
     @PostMapping("/search")
     public List<SearchResponse> getPetSitters(@RequestBody SearchRequest searchRequest) {
-        if (searchRequest.getCity() == null) {
-            searchRequest.setCity("Paris");
+        if (searchRequest.getCity() == null ){
+            searchRequest.setCity("tours");
         }
         if (searchRequest.getTypeService() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nous n'avons pas trouvé le type de service demandé.");

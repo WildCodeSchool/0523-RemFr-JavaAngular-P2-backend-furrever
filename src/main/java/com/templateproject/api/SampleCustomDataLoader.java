@@ -4,21 +4,20 @@ import com.github.javafaker.Faker;
 import com.templateproject.api.entity.*;
 import com.templateproject.api.repository.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
-public class SampleDataLoader implements CommandLineRunner {
+public class SampleCustomDataLoader implements CommandLineRunner {
 
     private final Faker faker;
-    private List<String> typeService = new ArrayList<>();
     private final SpeciesRepository speciesRepository;
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
@@ -26,8 +25,11 @@ public class SampleDataLoader implements CommandLineRunner {
     private final ServiceRepository serviceRepository;
     private final TransactionRepository transactionRepository;
     private final CommentRepository commentRepository;
+    private List<String> typeService = new ArrayList<>();
+    private List<String> cities = new ArrayList<>();
+    private List<String> pictures = new ArrayList<>();
 
-    public SampleDataLoader(
+    public SampleCustomDataLoader(
             SpeciesRepository speciesRepository,
             UserRepository userRepository,
             LocationRepository locationRepository,
@@ -37,9 +39,23 @@ public class SampleDataLoader implements CommandLineRunner {
             CommentRepository commentRepository
     ) {
         this.faker = new Faker();
+
         this.typeService.add("promenade quotidienne");
         this.typeService.add("visite à domicile");
         this.typeService.add("garde prolongée");
+
+        this.cities.add("tours");
+        this.cities.add("saint avertin");
+        this.cities.add("saint cyr sur loire");
+        this.cities.add("la riche");
+
+        this.pictures.add("lion.jpg");
+        this.pictures.add("gorilla.png");
+        this.pictures.add("cow.jpg");
+        this.pictures.add("sea_lion.jpg");
+        this.pictures.add("donkey.jpg");
+        this.pictures.add("otter.jpg");
+
         this.speciesRepository = speciesRepository;
         this.userRepository = userRepository;
         this.locationRepository = locationRepository;
@@ -56,9 +72,8 @@ public class SampleDataLoader implements CommandLineRunner {
         }
         List<Species> speciesList = this.speciesData();
         List<Location> locationList = this.locationData();
-        List<Location> locationListTours = this.locationDataTours();
-        List<User> userList = this.userData(locationList, locationListTours);
-        List<User> petsitterList = this.petsitterData(locationList, locationListTours);
+        List<User> userList = this.userData(locationList);
+        List<User> petsitterList = this.petsitterData(locationList);
         this.animalData(userList, speciesList);
         List<Service> serviceList = this.serviceData(petsitterList,speciesList);
         List<Transaction> transactionList = this.transactionData(userList, serviceList);
@@ -69,76 +84,72 @@ public class SampleDataLoader implements CommandLineRunner {
         List<Species> speciesList = new ArrayList<>();
 
         Species canin = new Species();
-        canin.setName("Canin");
+        canin.setName("canin");
         speciesList.add(canin);
 
         Species felin = new Species();
-        felin.setName("Félin");
+        felin.setName("félin");
         speciesList.add(felin);
 
         Species reptile = new Species();
-        reptile.setName("Reptile");
+        reptile.setName("reptile");
         speciesList.add(reptile);
 
         Species bovin = new Species();
-        bovin.setName("Bovin");
+        bovin.setName("bovin");
         speciesList.add(bovin);
 
         Species equidae = new Species();
-        equidae.setName("Équidé");
+        equidae.setName("équidé");
         speciesList.add(equidae);
 
         Species volaille = new Species();
-        volaille.setName("Volaille");
+        volaille.setName("volaille");
         speciesList.add(volaille);
 
         this.speciesRepository.saveAll(speciesList);
         return speciesList;
     }
 
-    private List<User> userData(List<Location> locationList, List<Location> locationListTours) {
-        List<User> userList = IntStream.rangeClosed(1, 50)
+    private List<User> userData(List<Location> locationList) {
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        List<User> userList = IntStream.rangeClosed(1, 1000)
                 .mapToObj(i -> {
+                    Collections.shuffle(this.pictures);
                     String firstName = this.faker.name().firstName();
                     String lastName = this.faker.name().lastName();
                     User user = new User();
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
-                    user.setEmail(firstName + lastName + "@api.com");
-                    user.setPassword("password");
-                    if (this.faker.random().nextBoolean()) {
-                        user.setLocation(locationList.get(0));
-                        locationList.remove(0);
-                    } else {
-                        user.setLocation(locationListTours.get(0));
-                        locationListTours.remove(0);
-                    }
+                    user.setEmail(firstName + lastName + this.faker.random().nextInt(1, 10000000) + "@api.com");
+                    user.setPicture(this.pictures.get(0));
+                    user.setPassword(passwordEncoder.encode("password"));
+                    user.setLocation(locationList.get(0));
+                    locationList.remove(0);
                     return user;
                 })
                 .collect(Collectors.toList());
         return this.userRepository.saveAll(userList);
     }
 
-    private List<User> petsitterData(List<Location> locationList, List<Location> locationListTours) {
-        List<User> userList = IntStream.rangeClosed(1, 20)
+    private List<User> petsitterData(List<Location> locationList) {
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        List<User> userList = IntStream.rangeClosed(1, 500)
                 .mapToObj(i -> {
+                    Collections.shuffle(this.pictures);
                     String firstName = this.faker.name().firstName();
                     String lastName = this.faker.name().lastName();
                     User user = new User();
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
-                    user.setEmail(firstName + lastName + "@api.com");
-                    user.setPassword("password");
+                    user.setEmail(firstName + lastName + this.faker.random().nextInt(1, 10000000) + "@api.com");
+                    user.setPicture(this.pictures.get(0));
+                    user.setPassword(passwordEncoder.encode("password"));
                     user.setPetSitter(true);
-                    if (this.faker.random().nextBoolean()) {
-                        user.setLocation(locationList.get(0));
-                        locationList.remove(0);
-                    } else {
-                        user.setLocation(locationListTours.get(0));
-                        locationListTours.remove(0);
-                    }
+                    user.setLocation(locationList.get(0));
+                    locationList.remove(0);
                     return user;
                 })
                 .collect(Collectors.toList());
@@ -146,35 +157,22 @@ public class SampleDataLoader implements CommandLineRunner {
     }
 
     private List<Location> locationData() {
-        List<Location> locationList = IntStream.rangeClosed(1, 70)
+        List<Location> locationList = IntStream.rangeClosed(1, 1500)
                 .mapToObj(i -> {
+                    Collections.shuffle(this.cities);
                     Location location = new Location();
                     location.setStreetNumber(String.valueOf(this.faker.number().numberBetween(1, 1000)));
                     location.setStreet("rue de " + this.faker.dragonBall().character());
-                    location.setZipCode("37540");
-                    location.setCity("Saint Cyr sur Loire");
+                    location.setCity(this.cities.get(0));
+                    location.setZipCode(this.addZipCode(location.getCity()));
                     return location;
                 })
                 .collect(Collectors.toList());
         return this.locationRepository.saveAll(locationList);
     }
 
-    private List<Location> locationDataTours() {
-        List<Location> locationToursList = IntStream.rangeClosed(1, 70)
-                .mapToObj(i -> {
-                    Location toursLocation = new Location();
-                    toursLocation.setStreetNumber(String.valueOf(this.faker.number().numberBetween(1, 1000)));
-                    toursLocation.setStreet("rue de " + this.faker.dragonBall().character());
-                    toursLocation.setZipCode("37000");
-                    toursLocation.setCity("Tours");
-                    return toursLocation;
-                })
-                .collect(Collectors.toList());
-        return this.locationRepository.saveAll(locationToursList);
-    }
-
     private void animalData(List<User> userList, List<Species> speciesList) {
-        List<Animal> animalList = IntStream.rangeClosed(1, 150)
+        List<Animal> animalList = IntStream.rangeClosed(1, 2000)
                 .mapToObj(i -> {
                     Collections.shuffle(userList);
                     Collections.shuffle(speciesList);
@@ -217,7 +215,7 @@ public class SampleDataLoader implements CommandLineRunner {
         listOfSpeciesList.add(speciesList2);
         listOfSpeciesList.add(speciesList3);
         listOfSpeciesList.add(speciesList4);
-        List<Service> serviceList = IntStream.rangeClosed(1, 80)
+        List<Service> serviceList = IntStream.rangeClosed(1, 4000)
                 .mapToObj(i -> {
                     Collections.shuffle(petsitterList);
                     Collections.shuffle(listOfSpeciesList);
@@ -236,7 +234,7 @@ public class SampleDataLoader implements CommandLineRunner {
     }
 
     private List<Transaction> transactionData(List<User> userList, List<Service> serviceList) {
-        List<Transaction> transactionList = IntStream.rangeClosed(1, 200)
+        List<Transaction> transactionList = IntStream.rangeClosed(1, 3000)
                 .mapToObj(i -> {
                     long minDay = LocalDate.of(2023, 5, 1).toEpochDay();
                     long maxDay = LocalDate.of(2023, 7, 1).toEpochDay();
@@ -251,6 +249,7 @@ public class SampleDataLoader implements CommandLineRunner {
                     transaction.setStatus(this.faker.random().nextBoolean());
                     transaction.setUser(userList.get(0));
                     transaction.setService(serviceList.get(0));
+                    serviceList.remove(0);
                     return transaction;
                 })
                 .collect(Collectors.toList());
@@ -279,4 +278,18 @@ public class SampleDataLoader implements CommandLineRunner {
         this.commentRepository.saveAll(commentList);
     }
 
+    private String addZipCode(String city){
+        switch(city){
+            case "saint avertin":
+                return "37550";
+            case "saint cyr sur loire":
+                return "37540";
+            case "la riche":
+                return "37540";
+            case "tours":
+                return "37000";
+            default:
+                return "37000";
+        }
+    }
 }
