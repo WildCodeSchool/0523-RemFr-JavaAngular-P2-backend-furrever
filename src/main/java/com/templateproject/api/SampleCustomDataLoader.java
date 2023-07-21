@@ -26,7 +26,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
     private final TransactionRepository transactionRepository;
     private final CommentRepository commentRepository;
     private List<String> typeService = new ArrayList<>();
-    private Set<String> cities = new HashSet<>();
+    private List<String> cities = new ArrayList<>();
     private List<String> pictures = new ArrayList<>();
 
     public SampleCustomDataLoader(
@@ -72,9 +72,8 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         }
         List<Species> speciesList = this.speciesData();
         List<Location> locationList = this.locationData();
-        List<Location> locationListTours = this.locationDataTours();
-        List<User> userList = this.userData(locationList, locationListTours);
-        List<User> petsitterList = this.petsitterData(locationList, locationListTours);
+        List<User> userList = this.userData(locationList);
+        List<User> petsitterList = this.petsitterData(locationList);
         this.animalData(userList, speciesList);
         List<Service> serviceList = this.serviceData(petsitterList,speciesList);
         List<Transaction> transactionList = this.transactionData(userList, serviceList);
@@ -112,9 +111,9 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         return speciesList;
     }
 
-    private List<User> userData(List<Location> locationList, List<Location> locationListTours) {
+    private List<User> userData(List<Location> locationList) {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        List<User> userList = IntStream.rangeClosed(1, 50)
+        List<User> userList = IntStream.rangeClosed(1, 1000)
                 .mapToObj(i -> {
                     Collections.shuffle(this.pictures);
                     String firstName = this.faker.name().firstName();
@@ -123,25 +122,20 @@ public class SampleCustomDataLoader implements CommandLineRunner {
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
-                    user.setEmail(firstName + lastName + "@api.com");
+                    user.setEmail(firstName + lastName + this.faker.random().nextInt(1, 10000000) + "@api.com");
                     user.setPicture(this.pictures.get(0));
                     user.setPassword(passwordEncoder.encode("password"));
-                    if (this.faker.random().nextBoolean()) {
-                        user.setLocation(locationList.get(0));
-                        locationList.remove(0);
-                    } else {
-                        user.setLocation(locationListTours.get(0));
-                        locationListTours.remove(0);
-                    }
+                    user.setLocation(locationList.get(0));
+                    locationList.remove(0);
                     return user;
                 })
                 .collect(Collectors.toList());
         return this.userRepository.saveAll(userList);
     }
 
-    private List<User> petsitterData(List<Location> locationList, List<Location> locationListTours) {
+    private List<User> petsitterData(List<Location> locationList) {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        List<User> userList = IntStream.rangeClosed(1, 20)
+        List<User> userList = IntStream.rangeClosed(1, 500)
                 .mapToObj(i -> {
                     Collections.shuffle(this.pictures);
                     String firstName = this.faker.name().firstName();
@@ -150,17 +144,12 @@ public class SampleCustomDataLoader implements CommandLineRunner {
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
-                    user.setEmail(firstName + lastName + "@api.com");
+                    user.setEmail(firstName + lastName + this.faker.random().nextInt(1, 10000000) + "@api.com");
                     user.setPicture(this.pictures.get(0));
                     user.setPassword(passwordEncoder.encode("password"));
                     user.setPetSitter(true);
-                    if (this.faker.random().nextBoolean()) {
-                        user.setLocation(locationList.get(0));
-                        locationList.remove(0);
-                    } else {
-                        user.setLocation(locationListTours.get(0));
-                        locationListTours.remove(0);
-                    }
+                    user.setLocation(locationList.get(0));
+                    locationList.remove(0);
                     return user;
                 })
                 .collect(Collectors.toList());
@@ -168,35 +157,22 @@ public class SampleCustomDataLoader implements CommandLineRunner {
     }
 
     private List<Location> locationData() {
-        List<Location> locationList = IntStream.rangeClosed(1, 70)
+        List<Location> locationList = IntStream.rangeClosed(1, 1500)
                 .mapToObj(i -> {
+                    Collections.shuffle(this.cities);
                     Location location = new Location();
                     location.setStreetNumber(String.valueOf(this.faker.number().numberBetween(1, 1000)));
                     location.setStreet("rue de " + this.faker.dragonBall().character());
-                    location.setZipCode("37540");
-                    location.setCity("Saint Cyr sur Loire");
+                    location.setCity(this.cities.get(0));
+                    location.setZipCode(this.addZipCode(location.getCity()));
                     return location;
                 })
                 .collect(Collectors.toList());
         return this.locationRepository.saveAll(locationList);
     }
 
-    private List<Location> locationDataTours() {
-        List<Location> locationToursList = IntStream.rangeClosed(1, 70)
-                .mapToObj(i -> {
-                    Location toursLocation = new Location();
-                    toursLocation.setStreetNumber(String.valueOf(this.faker.number().numberBetween(1, 1000)));
-                    toursLocation.setStreet("rue de " + this.faker.dragonBall().character());
-                    toursLocation.setZipCode("37000");
-                    toursLocation.setCity("Tours");
-                    return toursLocation;
-                })
-                .collect(Collectors.toList());
-        return this.locationRepository.saveAll(locationToursList);
-    }
-
     private void animalData(List<User> userList, List<Species> speciesList) {
-        List<Animal> animalList = IntStream.rangeClosed(1, 150)
+        List<Animal> animalList = IntStream.rangeClosed(1, 2000)
                 .mapToObj(i -> {
                     Collections.shuffle(userList);
                     Collections.shuffle(speciesList);
@@ -239,7 +215,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         listOfSpeciesList.add(speciesList2);
         listOfSpeciesList.add(speciesList3);
         listOfSpeciesList.add(speciesList4);
-        List<Service> serviceList = IntStream.rangeClosed(1, 80)
+        List<Service> serviceList = IntStream.rangeClosed(1, 4000)
                 .mapToObj(i -> {
                     Collections.shuffle(petsitterList);
                     Collections.shuffle(listOfSpeciesList);
@@ -258,7 +234,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
     }
 
     private List<Transaction> transactionData(List<User> userList, List<Service> serviceList) {
-        List<Transaction> transactionList = IntStream.rangeClosed(1, 20)
+        List<Transaction> transactionList = IntStream.rangeClosed(1, 3000)
                 .mapToObj(i -> {
                     long minDay = LocalDate.of(2023, 5, 1).toEpochDay();
                     long maxDay = LocalDate.of(2023, 7, 1).toEpochDay();
@@ -302,7 +278,18 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         this.commentRepository.saveAll(commentList);
     }
 
-
-
-
+    private String addZipCode(String city){
+        switch(city){
+            case "saint avertin":
+                return "37550";
+            case "saint cyr sur loire":
+                return "37540";
+            case "la riche":
+                return "37540";
+            case "tours":
+                return "37000";
+            default:
+                return "37000";
+        }
+    }
 }
