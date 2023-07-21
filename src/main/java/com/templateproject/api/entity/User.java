@@ -69,6 +69,8 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<Animal> animals = new HashSet<>();
+    public User() {
+    }
 
     public UUID getId() {
 
