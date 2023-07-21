@@ -27,6 +27,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
     private final CommentRepository commentRepository;
     private List<String> typeService = new ArrayList<>();
     private Set<String> cities = new HashSet<>();
+    private List<String> pictures = new ArrayList<>();
 
     public SampleCustomDataLoader(
             SpeciesRepository speciesRepository,
@@ -47,6 +48,13 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         this.cities.add("saint avertin");
         this.cities.add("saint cyr sur loire");
         this.cities.add("la riche");
+
+        this.pictures.add("lion.jpg");
+        this.pictures.add("gorilla.png");
+        this.pictures.add("cow.jpg");
+        this.pictures.add("sea_lion.jpg");
+        this.pictures.add("donkey.jpg");
+        this.pictures.add("otter.jpg");
 
         this.speciesRepository = speciesRepository;
         this.userRepository = userRepository;
@@ -105,8 +113,10 @@ public class SampleCustomDataLoader implements CommandLineRunner {
     }
 
     private List<User> userData(List<Location> locationList, List<Location> locationListTours) {
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         List<User> userList = IntStream.rangeClosed(1, 50)
                 .mapToObj(i -> {
+                    Collections.shuffle(this.pictures);
                     String firstName = this.faker.name().firstName();
                     String lastName = this.faker.name().lastName();
                     User user = new User();
@@ -114,7 +124,8 @@ public class SampleCustomDataLoader implements CommandLineRunner {
                     user.setLastName(lastName);
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
                     user.setEmail(firstName + lastName + "@api.com");
-                    user.setPassword("password");
+                    user.setPicture(this.pictures.get(0));
+                    user.setPassword(passwordEncoder.encode("password"));
                     if (this.faker.random().nextBoolean()) {
                         user.setLocation(locationList.get(0));
                         locationList.remove(0);
@@ -132,6 +143,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         List<User> userList = IntStream.rangeClosed(1, 20)
                 .mapToObj(i -> {
+                    Collections.shuffle(this.pictures);
                     String firstName = this.faker.name().firstName();
                     String lastName = this.faker.name().lastName();
                     User user = new User();
@@ -139,6 +151,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
                     user.setLastName(lastName);
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
                     user.setEmail(firstName + lastName + "@api.com");
+                    user.setPicture(this.pictures.get(0));
                     user.setPassword(passwordEncoder.encode("password"));
                     user.setPetSitter(true);
                     if (this.faker.random().nextBoolean()) {

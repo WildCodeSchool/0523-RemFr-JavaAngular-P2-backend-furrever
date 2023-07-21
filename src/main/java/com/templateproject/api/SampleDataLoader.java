@@ -51,7 +51,7 @@ public class SampleDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (this.speciesRepository.count() > 0){
+       /* if (this.speciesRepository.count() > 0){
             return;
         }
         List<Species> speciesList = this.speciesData();
@@ -62,7 +62,7 @@ public class SampleDataLoader implements CommandLineRunner {
         this.animalData(userList, speciesList);
         List<Service> serviceList = this.serviceData(petsitterList,speciesList);
         List<Transaction> transactionList = this.transactionData(userList, serviceList);
-        this.commentData(transactionList);
+        this.commentData(transactionList);*/
     }
 
     private List<Species> speciesData() {
