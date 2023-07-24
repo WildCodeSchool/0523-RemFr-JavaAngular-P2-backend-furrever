@@ -21,6 +21,10 @@ public class Transaction {
     @NotNull(message = "Le nom ne peut pas être nul.")
     private LocalDate dateEnd;
     private Boolean status;
+
+    @Lob
+    @Column(length = 500)
+    private String content;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
@@ -99,4 +103,11 @@ public class Transaction {
         this.service = service;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

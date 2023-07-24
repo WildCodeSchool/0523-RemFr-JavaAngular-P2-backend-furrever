@@ -2,14 +2,17 @@ package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.Comment;
 import com.templateproject.api.entity.Transaction;
+import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.CommentRepository;
 import com.templateproject.api.repository.TransactionRepository;
+import com.templateproject.api.repository.UserRepository;
 import com.templateproject.api.service.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -19,15 +22,22 @@ public class TransactionController {
 
     private final TransactionRepository transactionRepo;
     private final CommentRepository commentRepo;
+    private final UserRepository userRepo;
 
-    public TransactionController(TransactionRepository transactionRepository, CommentRepository commentRepository) {
+    public TransactionController(TransactionRepository transactionRepository, CommentRepository commentRepository, UserRepository userRepo) {
         this.transactionRepo = transactionRepository;
         this.commentRepo = commentRepository;
+        this.userRepo = userRepo;
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Transaction createTransaction(@RequestBody Transaction transaction) {
+    public Transaction createTransaction(@RequestBody Transaction transaction, Principal principal) {
+        String userName = principal.getName();
+        User user =this.userRepo
+                .findByEmail(userName)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
+        transaction.setUser(user);
         return this.transactionRepo.save(transaction);
     }
 
