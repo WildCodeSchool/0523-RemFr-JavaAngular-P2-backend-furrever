@@ -2,6 +2,7 @@ package com.templateproject.api.repository;
 
 import com.templateproject.api.dto.PetSitterProfile;
 import com.templateproject.api.dto.SearchResponse;
+import com.templateproject.api.dto.UserProfile;
 import com.templateproject.api.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,11 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "FROM User u JOIN u.location l " +
             "WHERE u.isPetSitter AND u.id = :id")
     PetSitterProfile getPetSitterById(@Param("id") UUID id);
+
+    @Query("SELECT new com.templateproject.api.dto.UserProfile(u.id, u.email, u.firstName, u.lastName, u.description, u.picture, u.isPetSitter, u.location) " +
+            "FROM User u JOIN u.location l " +
+            "WHERE u.id = :id")
+    UserProfile getUserById(@Param("id") UUID id);
 
     Optional<User> findByEmail(String email);
 
