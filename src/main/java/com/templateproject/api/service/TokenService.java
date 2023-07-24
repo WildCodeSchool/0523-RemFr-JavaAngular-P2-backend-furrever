@@ -36,7 +36,7 @@ public class TokenService {
                 // expire dans une heure
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
                 // s'adresse à l'utilisateur connecté : ici renvoi son email
-                //.subject(auth.getName())
+                .subject(auth.getName())
                 .subject(((User) auth.getPrincipal()).getPicture())
                 // scope: correspond aux rôles de l'utilisateur
                 .claim("scope", scope)
