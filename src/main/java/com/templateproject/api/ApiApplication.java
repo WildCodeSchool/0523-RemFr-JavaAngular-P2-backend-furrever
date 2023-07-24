@@ -2,6 +2,7 @@ package com.templateproject.api;
 
 import com.templateproject.api.entity.Role;
 import com.templateproject.api.repository.RoleRepository;
+import com.templateproject.api.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

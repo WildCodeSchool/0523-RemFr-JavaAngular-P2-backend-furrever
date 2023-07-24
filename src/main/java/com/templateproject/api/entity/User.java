@@ -1,6 +1,8 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -25,6 +27,7 @@ public class User implements UserDetails {
     @NotBlank(message = "L'email ne peut pas être vide.")
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull(message = "Le mot de passe ne peut pas être nul.")
     @NotBlank(message = "Le mot de passe ne peut pas être vide.")
     @Column(length = 255)
