@@ -1,14 +1,10 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.dto.AnimalTemplate;
-import com.templateproject.api.dto.TransactionUserTemplate;
-import com.templateproject.api.dto.UserProfile;
-import com.templateproject.api.dto.UserProfileResponse;
+import com.templateproject.api.dto.*;
 import com.templateproject.api.entity.Animal;
-import com.templateproject.api.entity.Location;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.AnimalRepository;
-import com.templateproject.api.repository.LocationRepository;
+import com.templateproject.api.repository.ServiceRepository;
 import com.templateproject.api.repository.TransactionRepository;
 import com.templateproject.api.repository.UserRepository;
 import com.templateproject.api.service.utils.BeanUtils;
@@ -27,13 +23,13 @@ public class UserController {
     private final UserRepository userRepo;
     private final AnimalRepository animalRepo;
     private final TransactionRepository transactionRepo;
-    private final LocationRepository locationRepo;
+    private final ServiceRepository serviceRepo;
 
-    public UserController(UserRepository userRepository, AnimalRepository animalRepository, TransactionRepository transactionRepo, LocationRepository locationRepository) {
+    public UserController(UserRepository userRepository, AnimalRepository animalRepository, TransactionRepository transactionRepo, ServiceRepository serviceRepo) {
         this.userRepo = userRepository;
         this.animalRepo = animalRepository;
         this.transactionRepo = transactionRepo;
-        this.locationRepo = locationRepository;
+        this.serviceRepo = serviceRepo;
     }
 
     @GetMapping("")
@@ -44,7 +40,6 @@ public class UserController {
         UserProfile userProfile = this.userRepo.getUserById(user.getId());
         List<TransactionUserTemplate> transactionTemplateList = this.transactionRepo.getTransactionsByUser(user.getId());
         List<AnimalTemplate> animalTemplateList = this.animalRepo.getAnimalsByUser(user.getId());
-        Location location = this.locationRepo.findLocationByUserId(user.getId());
        UserProfileResponse finalUser = new UserProfileResponse();
       if(transactionTemplateList.size() > 0){
             finalUser.setTransactionUserTemplateList(transactionTemplateList);
@@ -53,9 +48,6 @@ public class UserController {
            finalUser.setAnimalTemplateList(animalTemplateList);
        }
        finalUser.setUserProfile(userProfile);
-       if(location != null){
-                 finalUser.setLocation(location);
-       }
     return finalUser;
 
     }

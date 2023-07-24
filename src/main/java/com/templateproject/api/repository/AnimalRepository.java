@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, UUID> {
-    @Query("SELECT new com.templateproject.api.dto.AnimalTemplate (a.id, a.firstName, CAST(a.birthday AS LocalDate), CAST(a.weight AS float), a.description, a.species) " +
-    "FROM Animal a JOIN a.user u " +
+    @Query("SELECT new com.templateproject.api.dto.AnimalTemplate (a.id, a.firstName, a.birthday, CAST(a.weight AS float), a.description, s.name) " +
+    "FROM Animal a JOIN a.user u JOIN a.species s " +
     "WHERE u.id = :id")
     List<AnimalTemplate> getAnimalsByUser(@Param("id") UUID id);
 }

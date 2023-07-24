@@ -25,8 +25,8 @@ public class ServiceController {
         this.userRepo = userRepo;
     }
 
-    @PostMapping("/services")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
+    @PostMapping("")
+    //@PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
     @ResponseStatus(HttpStatus.CREATED)
     public Service createService(Principal principal, @RequestBody Service service) {
         User petsitter = this.userRepo
@@ -39,7 +39,7 @@ public class ServiceController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vous n'êtes pas autorisé a créer un service!");
     }
 
-    @PutMapping("/services/{serviceId}")
+    @PutMapping("/{serviceId}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
     public Service updateService(Principal principal, @PathVariable UUID serviceId, @RequestBody Service serviceToModify) {
         Service serviceInBdd = this.serviceRepo
@@ -58,7 +58,7 @@ public class ServiceController {
         }
     }
 
-    @DeleteMapping("/services/{serviceId}")
+    @DeleteMapping("/{serviceId}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
     public void deleteService(Principal principal, @PathVariable UUID serviceId) {
         User petsitter = this.userRepo

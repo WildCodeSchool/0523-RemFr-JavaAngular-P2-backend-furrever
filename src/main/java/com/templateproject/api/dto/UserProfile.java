@@ -1,5 +1,6 @@
 package com.templateproject.api.dto;
 
+import com.templateproject.api.entity.Location;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -10,14 +11,20 @@ public class UserProfile {
     private String email;
     private String firstname;
     private String lastname;
+    private String description;
     private String picture;
+    private Boolean isPetSitter;
+    private Location location;
 
-    public UserProfile(UUID idUser, String email, String firstname, String lastname, String picture) {
+    public UserProfile(UUID idUser, String email, String firstname, String lastname, String description, String picture, Boolean isPetSitter, Location location) {
         this.idUser = idUser;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.description = description;
         this.picture = picture;
+        this.isPetSitter = isPetSitter;
+        this.location = location;
     }
 
     public UserProfile(){}
@@ -60,5 +67,29 @@ public class UserProfile {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getPetSitter() {
+        return isPetSitter;
+    }
+
+    public void setPetSitter(Boolean petSitter) {
+        isPetSitter = petSitter;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

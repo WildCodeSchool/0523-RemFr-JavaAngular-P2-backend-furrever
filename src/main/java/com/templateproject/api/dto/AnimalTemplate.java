@@ -14,9 +14,9 @@ public class AnimalTemplate {
     private LocalDate birthday;
     private float weight;
     private String description;
-    private Species species;
+    private String species;
 
-    public AnimalTemplate(UUID idAnimal, String firstName, LocalDate birthday, float weight, String description, Species species) {
+    public AnimalTemplate(UUID idAnimal, String firstName, LocalDate birthday, float weight, String description, String species) {
         this.idAnimal = idAnimal;
         this.firstName = firstName;
         this.birthday = birthday;
@@ -25,7 +25,8 @@ public class AnimalTemplate {
         this.species = species;
     }
 
-    public AnimalTemplate(){}
+    public AnimalTemplate() {
+    }
 
     public UUID getIdAnimal() {
         return idAnimal;
@@ -67,11 +68,11 @@ public class AnimalTemplate {
         this.description = description;
     }
 
-    public Species getSpecies() {
+    public String getSpecies() {
         return species;
     }
 
-    public void setSpecies(Species species) {
+    public void setSpecies(String species) {
         this.species = species;
     }
 }

@@ -1,8 +1,10 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.dto.LoginResponse;
+import com.templateproject.api.entity.Location;
 import com.templateproject.api.entity.Role;
 import com.templateproject.api.entity.User;
+import com.templateproject.api.repository.LocationRepository;
 import com.templateproject.api.repository.RoleRepository;
 import com.templateproject.api.repository.UserRepository;
 import com.templateproject.api.service.TokenService;
@@ -28,16 +30,18 @@ public class AuthController {
     private final AuthenticationManager authManager;
     private final TokenService tokenService;
     private final RoleRepository roleRepository;
+    private final LocationRepository locationRepository;
     public AuthController(
             UserRepository userRepositoryInjected,
             AuthenticationManager authManagerInjected,
             TokenService tokenServiceInjected,
-            RoleRepository roleRepositoryInjected
-    ) {
+            RoleRepository roleRepositoryInjected,
+            LocationRepository locationRepository) {
         this.userRepository = userRepositoryInjected;
         this.authManager = authManagerInjected;
         this.tokenService = tokenServiceInjected;
         this.roleRepository = roleRepositoryInjected;
+        this.locationRepository = locationRepository;
     }
 
     @PostMapping("/register")
@@ -63,6 +67,11 @@ public class AuthController {
                                     "No ROLE_PETSITTER found"));
             newUser.setRoles(Set.of(petSitterRole));
         }
+        Location location = new Location();
+
+        this.locationRepository.save(location);
+        newUser.setLocation(location);
+
         return this.userRepository.save(newUser);
     }
 

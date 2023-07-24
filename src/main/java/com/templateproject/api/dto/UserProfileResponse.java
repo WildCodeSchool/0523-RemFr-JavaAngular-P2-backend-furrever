@@ -11,19 +11,20 @@ public class UserProfileResponse {
     private UserProfile userProfile;
     private List<AnimalTemplate> animalTemplateList = new ArrayList<>();
     private List<TransactionUserTemplate> transactionUserTemplateList = new ArrayList<>();
-    private Location location;
+    private List<ServiceTemplate> serviceTemplateList = new ArrayList<>();
 
-    public UserProfileResponse(UserProfile userProfile, List<AnimalTemplate> animalTemplateList, List<TransactionUserTemplate> transactionUserTemplateList, Location location) {
+    public UserProfileResponse(UserProfile userProfile, List<AnimalTemplate> animalTemplateList, List<TransactionUserTemplate> transactionUserTemplateList, List<ServiceTemplate> serviceTemplateList) {
         this.userProfile = userProfile;
         this.animalTemplateList = animalTemplateList;
         this.transactionUserTemplateList = transactionUserTemplateList;
-        this.location = location;
+        this.serviceTemplateList = serviceTemplateList;
     }
 
     public UserProfileResponse() {
     }
 
     public UserProfile getUserProfile() {
+
         return userProfile;
     }
 
@@ -47,11 +48,11 @@ public class UserProfileResponse {
         this.transactionUserTemplateList = transactionUserTemplateList;
     }
 
-    public Location getLocation() {
-        return location;
+    public List<ServiceTemplate> getServiceTemplateList() {
+        return serviceTemplateList;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setServiceTemplateList(List<ServiceTemplate> serviceTemplateList) {
+        this.serviceTemplateList = serviceTemplateList;
     }
 }
