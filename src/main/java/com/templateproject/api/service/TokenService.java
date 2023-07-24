@@ -31,14 +31,10 @@ public class TokenService {
         Instant now = Instant.now();
         JwtClaimsSet payload = JwtClaimsSet.builder()
                 .issuer("self")
-                // a été créé à l'instant
                 .issuedAt(now)
-                // expire dans une heure
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
-                // s'adresse à l'utilisateur connecté : ici renvoi son email
                 .subject(auth.getName())
-                .subject(((User) auth.getPrincipal()).getPicture())
-                // scope: correspond aux rôles de l'utilisateur
+                .claim("picture", ((User) auth.getPrincipal()).getPicture())
                 .claim("scope", scope)
                 .build();
 

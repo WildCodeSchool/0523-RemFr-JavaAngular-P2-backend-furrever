@@ -4,6 +4,7 @@ import com.templateproject.api.entity.Comment;
 import com.templateproject.api.entity.Transaction;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.CommentRepository;
+import com.templateproject.api.repository.ServiceRepository;
 import com.templateproject.api.repository.TransactionRepository;
 import com.templateproject.api.repository.UserRepository;
 import com.templateproject.api.service.utils.BeanUtils;
@@ -34,7 +35,7 @@ public class TransactionController {
     @ResponseStatus(HttpStatus.CREATED)
     public Transaction createTransaction(@RequestBody Transaction transaction, Principal principal) {
         String userName = principal.getName();
-        User user =this.userRepo
+        User user = this.userRepo
                 .findByEmail(userName)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         transaction.setUser(user);

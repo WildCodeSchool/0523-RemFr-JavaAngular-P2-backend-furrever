@@ -1,6 +1,7 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +26,7 @@ public class Transaction {
     @Lob
     @Column(length = 500)
     private String content;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
