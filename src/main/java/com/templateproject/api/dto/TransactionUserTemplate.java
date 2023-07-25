@@ -12,16 +12,29 @@ public class TransactionUserTemplate {
     private LocalDate dateEnd;
     private Boolean status;
     private String content;
+    private String typeService;
+    private Float price;
+    private String ownerFirstName;
+    private String ownerLastName;
+    private String petSitterFirstName;
+    private String petSitterLastName;
 
-    public TransactionUserTemplate(UUID idTransaction, LocalDate dateStart, LocalDate dateEnd, Boolean status, String content) {
+    public TransactionUserTemplate(UUID idTransaction, LocalDate dateStart, LocalDate dateEnd, Boolean status, String content, String typeService, Float price, String ownerFirstName, String ownerLastName, String petSitterFirstName, String petSitterLastName) {
         this.idTransaction = idTransaction;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.status = status;
         this.content = content;
+        this.typeService = typeService;
+        this.price = price;
+        this.ownerFirstName = ownerFirstName;
+        this.ownerLastName = ownerLastName;
+        this.petSitterFirstName = petSitterFirstName;
+        this.petSitterLastName = petSitterLastName;
     }
 
-    public TransactionUserTemplate() {}
+    public TransactionUserTemplate() {
+    }
 
     public UUID getIdTransaction() {
         return idTransaction;
@@ -61,5 +74,53 @@ public class TransactionUserTemplate {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTypeService() {
+        return typeService;
+    }
+
+    public void setTypeService(String typeService) {
+        this.typeService = typeService;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public String getOwnerFirstName() {
+        return ownerFirstName;
+    }
+
+    public void setOwnerFirstName(String ownerFirstName) {
+        this.ownerFirstName = ownerFirstName;
+    }
+
+    public String getOwnerLastName() {
+        return ownerLastName;
+    }
+
+    public void setOwnerLastName(String ownerLastName) {
+        this.ownerLastName = ownerLastName;
+    }
+
+    public String getPetSitterFirstName() {
+        return petSitterFirstName;
+    }
+
+    public void setPetSitterFirstName(String petSitterFirstName) {
+        this.petSitterFirstName = petSitterFirstName;
+    }
+
+    public String getPetSitterLastName() {
+        return petSitterLastName;
+    }
+
+    public void setPetSitterLastName(String petSitterLastName) {
+        this.petSitterLastName = petSitterLastName;
     }
 }

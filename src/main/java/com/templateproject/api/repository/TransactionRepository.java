@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
-    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content) " +
-    "FROM Transaction t JOIN t.user u " +
+    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content, s.typeService, s.price, u.firstName, u.lastName, t.service.user.firstName, t.service.user.lastName) " +
+    "FROM Transaction t LEFT JOIN t.user u JOIN t.service s " +
     "WHERE u.id= :id")
     List<TransactionUserTemplate> getTransactionsByUser(@Param("id") UUID id);
 }
