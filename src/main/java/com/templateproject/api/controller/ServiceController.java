@@ -32,7 +32,7 @@ public class ServiceController {
         User petsitter = this.userRepo
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
-        if (petsitter.getPetSitter()) {
+        if (petsitter.getIsPetSitter()) {
             service.setUser(petsitter);
             return this.serviceRepo.save(service);
         }

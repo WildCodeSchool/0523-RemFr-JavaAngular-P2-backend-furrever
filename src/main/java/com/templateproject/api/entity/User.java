@@ -1,7 +1,6 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -85,13 +84,11 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public Boolean getPetSitter() {
-
+    public Boolean getIsPetSitter() {
         return isPetSitter;
     }
 
-    public void setPetSitter(Boolean petSitter) {
-
+    public void setIsPetSitter(Boolean petSitter) {
         isPetSitter = petSitter;
     }
 

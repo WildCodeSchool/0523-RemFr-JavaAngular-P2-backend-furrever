@@ -147,7 +147,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
                     user.setEmail(firstName + lastName + this.faker.random().nextInt(1, 10000000) + "@api.com");
                     user.setPicture(this.pictures.get(0));
                     user.setPassword(passwordEncoder.encode("password"));
-                    user.setPetSitter(true);
+                    user.setIsPetSitter(true);
                     user.setLocation(locationList.get(0));
                     locationList.remove(0);
                     return user;
