@@ -54,18 +54,20 @@ public class AuthController {
         }
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        // associer le role ROLE_USER à mon nouvel utilisateur
-        Role userRole = this.roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "No ROLE_USER found"));
-        newUser.setRoles(Set.of(userRole));
-        if (newUser.getPetSitter()){
+
+        if (newUser.getIsPetSitter()){
             Role petSitterRole = this.roleRepository.findByName("ROLE_PETSITTER")
                     .orElseThrow(() ->
                             new ResponseStatusException(HttpStatus.NOT_FOUND,
                                     "No ROLE_PETSITTER found"));
             newUser.setRoles(Set.of(petSitterRole));
+        } else {
+            // associer le role ROLE_USER à mon nouvel utilisateur
+            Role userRole = this.roleRepository.findByName("ROLE_USER")
+                    .orElseThrow(() ->
+                            new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                    "No ROLE_USER found"));
+            newUser.setRoles(Set.of(userRole));
         }
         Location location = new Location();
 
