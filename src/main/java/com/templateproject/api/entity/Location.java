@@ -1,10 +1,9 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
@@ -19,8 +18,6 @@ public class Location {
     private UUID id;
 
     @Column(length = 255)
-    @NotNull(message = "La rue ne doit pas être nulle.")
-    @NotBlank(message = "La rue ne doit pas être vide.")
     private String street;
 
     @Column(length = 100)
@@ -28,19 +25,19 @@ public class Location {
 
     @Column(length = 255)
     private String additionalAddress= null;
+
     @Column(length = 255)
-    @NotNull(message = "La ville ne doit pas être nulle.")
-    @NotBlank(message = "La ville ne doit pas être vide.")
     private String city;
 
     @Column(length = 255)
-    @NotNull(message = "Le code postal ne doit pas être nul.")
-    @NotBlank(message = "Le code postal ne doit pas être vide.")
     private String zipCode;
 
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne(mappedBy = "location")
     private User user;
+
+    public Location() {
+    }
 
     public UUID getId() {
         return id;
@@ -50,23 +47,19 @@ public class Location {
         this.id = id;
     }
 
-    public @NotNull String getStreet() {
-
+    public String getStreet() {
         return street;
     }
 
-    public void setStreet(@NotNull String street) {
-
+    public void setStreet(String street) {
         this.street = street;
     }
 
     public String getStreetNumber() {
-
         return streetNumber;
     }
 
-    public void setStreetNumber( String streetNumber) {
-
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 
@@ -78,23 +71,19 @@ public class Location {
         this.additionalAddress = additionalAddress;
     }
 
-    public @NotNull String getCity() {
-
+    public String getCity() {
         return city;
     }
 
-    public void setCity(@NotNull String city) {
-
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public @NotNull String getZipCode() {
-
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(@NotNull String zipCode) {
-
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 

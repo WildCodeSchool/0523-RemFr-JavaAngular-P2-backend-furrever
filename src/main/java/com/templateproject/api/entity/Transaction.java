@@ -26,8 +26,9 @@ public class Transaction {
     @Lob
     @Column(length = 500)
     private String content;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
     @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
