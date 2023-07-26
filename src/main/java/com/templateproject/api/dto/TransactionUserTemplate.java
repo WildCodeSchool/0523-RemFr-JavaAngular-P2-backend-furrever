@@ -16,10 +16,11 @@ public class TransactionUserTemplate {
     private Float price;
     private String ownerFirstName;
     private String ownerLastName;
+    private String ownerEmail;
     private String petSitterFirstName;
     private String petSitterLastName;
 
-    public TransactionUserTemplate(UUID idTransaction, LocalDate dateStart, LocalDate dateEnd, Boolean status, String content, String typeService, Float price, String ownerFirstName, String ownerLastName, String petSitterFirstName, String petSitterLastName) {
+    public TransactionUserTemplate(UUID idTransaction, LocalDate dateStart, LocalDate dateEnd, Boolean status, String content, String typeService, Float price, String ownerFirstName, String ownerLastName, String ownerEmail, String petSitterFirstName, String petSitterLastName) {
         this.idTransaction = idTransaction;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -29,6 +30,7 @@ public class TransactionUserTemplate {
         this.price = price;
         this.ownerFirstName = ownerFirstName;
         this.ownerLastName = ownerLastName;
+        this.ownerEmail = ownerEmail;
         this.petSitterFirstName = petSitterFirstName;
         this.petSitterLastName = petSitterLastName;
     }
@@ -122,5 +124,13 @@ public class TransactionUserTemplate {
 
     public void setPetSitterLastName(String petSitterLastName) {
         this.petSitterLastName = petSitterLastName;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 }

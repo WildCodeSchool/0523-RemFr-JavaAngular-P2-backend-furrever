@@ -12,8 +12,18 @@ import java.util.UUID;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
-    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content, s.typeService, s.price, u.firstName, u.lastName, t.service.user.firstName, t.service.user.lastName) " +
-    "FROM Transaction t LEFT JOIN t.user u JOIN t.service s " +
+    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content, s.typeService, s.price, u.firstName, u.lastName, u.email, t.service.user.firstName, t.service.user.lastName) " +
+    "FROM Transaction t JOIN t.user u JOIN t.service s " +
     "WHERE u.id= :id")
     List<TransactionUserTemplate> getTransactionsByUser(@Param("id") UUID id);
+
+    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content, s.typeService, s.price, u.firstName, u.lastName, u.email, uPetsitter.firstName, uPetsitter.lastName) " +
+            "FROM Transaction t JOIN t.service s JOIN s.user uPetsitter JOIN t.user u " +
+            "WHERE uPetsitter.id= :id")
+    List<TransactionUserTemplate> getTransactionsForPetsitter(@Param("id") UUID id);
+
+    @Query("SELECT count(t.id) FROM Transaction t " +
+            "JOIN t.service s JOIN s.user u " +
+            "WHERE u.id = :id AND t.status IS NULL")
+    Integer countTransactionStatusNull(@Param("id") UUID id);
 }

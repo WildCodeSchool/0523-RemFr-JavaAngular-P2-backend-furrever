@@ -10,13 +10,13 @@ import java.util.List;
 public class UserProfileResponse {
     private UserProfile userProfile;
     private List<AnimalTemplate> animalTemplateList = new ArrayList<>();
-    private List<TransactionUserTemplate> transactionUserTemplateList = new ArrayList<>();
+    private Integer nbTransactionStatusNull;
     private List<ServiceTemplate> serviceTemplateList = new ArrayList<>();
 
-    public UserProfileResponse(UserProfile userProfile, List<AnimalTemplate> animalTemplateList, List<TransactionUserTemplate> transactionUserTemplateList, List<ServiceTemplate> serviceTemplateList) {
+    public UserProfileResponse(UserProfile userProfile, List<AnimalTemplate> animalTemplateList, Integer nbTransactionStatusNull, List<ServiceTemplate> serviceTemplateList) {
         this.userProfile = userProfile;
         this.animalTemplateList = animalTemplateList;
-        this.transactionUserTemplateList = transactionUserTemplateList;
+        this.nbTransactionStatusNull = nbTransactionStatusNull;
         this.serviceTemplateList = serviceTemplateList;
     }
 
@@ -24,7 +24,6 @@ public class UserProfileResponse {
     }
 
     public UserProfile getUserProfile() {
-
         return userProfile;
     }
 
@@ -40,12 +39,12 @@ public class UserProfileResponse {
         this.animalTemplateList = animalTemplateList;
     }
 
-    public List<TransactionUserTemplate> getTransactionUserTemplateList() {
-        return transactionUserTemplateList;
+    public Integer getNbTransactionStatusNull() {
+        return nbTransactionStatusNull;
     }
 
-    public void setTransactionUserTemplateList(List<TransactionUserTemplate> transactionUserTemplateList) {
-        this.transactionUserTemplateList = transactionUserTemplateList;
+    public void setNbTransactionStatusNull(Integer nbTransactionStatusNull) {
+        this.nbTransactionStatusNull = nbTransactionStatusNull;
     }
 
     public List<ServiceTemplate> getServiceTemplateList() {
@@ -55,4 +54,5 @@ public class UserProfileResponse {
     public void setServiceTemplateList(List<ServiceTemplate> serviceTemplateList) {
         this.serviceTemplateList = serviceTemplateList;
     }
+
 }
