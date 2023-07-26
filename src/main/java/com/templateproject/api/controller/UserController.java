@@ -4,11 +4,9 @@ import com.templateproject.api.dto.AnimalTemplate;
 import com.templateproject.api.dto.UserProfile;
 import com.templateproject.api.dto.UserProfileResponse;
 import com.templateproject.api.entity.Animal;
+import com.templateproject.api.entity.Role;
 import com.templateproject.api.entity.User;
-import com.templateproject.api.repository.AnimalRepository;
-import com.templateproject.api.repository.ServiceRepository;
-import com.templateproject.api.repository.TransactionRepository;
-import com.templateproject.api.repository.UserRepository;
+import com.templateproject.api.repository.*;
 import com.templateproject.api.service.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -27,12 +26,14 @@ public class UserController {
     private final AnimalRepository animalRepo;
     private final TransactionRepository transactionRepo;
     private final ServiceRepository serviceRepo;
+    private final RoleRepository roleRepo;
 
-    public UserController(UserRepository userRepository, AnimalRepository animalRepository, TransactionRepository transactionRepo, ServiceRepository serviceRepo) {
+    public UserController(UserRepository userRepository, AnimalRepository animalRepository, TransactionRepository transactionRepo, ServiceRepository serviceRepo, RoleRepository roleRepo) {
         this.userRepo = userRepository;
         this.animalRepo = animalRepository;
         this.transactionRepo = transactionRepo;
         this.serviceRepo = serviceRepo;
+        this.roleRepo = roleRepo;
     }
 
     @GetMapping("")
@@ -57,7 +58,9 @@ public class UserController {
         User user = this.userRepo
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
+        userToModify.setRoles(null);
         BeanUtils.copyNonNullProperties(userToModify, user);
+
         return this.userRepo.save(user);
     }
 
