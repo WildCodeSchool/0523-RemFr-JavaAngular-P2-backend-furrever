@@ -9,14 +9,14 @@ public class CommentTemplate {
     private String content;
     private LocalDate date;
     private Integer note;
-    private String firstName;
+    private String firstname;
     private String initialLastName;
 
-    public CommentTemplate(String content, LocalDate date, Integer note, String firstName, String initialLastName) {
+    public CommentTemplate(String content, LocalDate date, Integer note, String firstname, String initialLastName) {
         this.content = content;
         this.date = date;
         this.note = note;
-        this.firstName = firstName;
+        this.firstname = firstname;
         this.initialLastName = initialLastName;
     }
 
@@ -47,12 +47,12 @@ public class CommentTemplate {
         this.note = note;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getInitialLastName() {

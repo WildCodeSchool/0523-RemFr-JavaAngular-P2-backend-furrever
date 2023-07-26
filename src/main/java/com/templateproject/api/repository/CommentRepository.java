@@ -13,10 +13,10 @@ import java.util.UUID;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, UUID> {
-    @Query("SELECT new com.templateproject.api.dto.CommentTemplate (c.content, c.date, c.note, u.firstName, CONCAT(LEFT(u.lastName, 1), '.')) FROM Comment c JOIN c.transaction t JOIN t.user u WHERE c.note >= 4 ORDER BY c.date DESC LIMIT 3")
+    @Query("SELECT new com.templateproject.api.dto.CommentTemplate (c.content, c.date, c.note, u.firstname, CONCAT(LEFT(u.lastname, 1), '.')) FROM Comment c JOIN c.transaction t JOIN t.user u WHERE c.note >= 4 ORDER BY c.date DESC LIMIT 3")
     List<CommentTemplate> getLastBestComments();
 
-    @Query("SELECT new com.templateproject.api.dto.CommentTemplate (c.content, c.date, c.note, u.firstName, u.lastName) " +
+    @Query("SELECT new com.templateproject.api.dto.CommentTemplate (c.content, c.date, c.note, u.firstname, u.lastname) " +
             "FROM Comment c JOIN c.transaction t JOIN t.user u JOIN t.service s JOIN s.user petsitter " +
             "WHERE petsitter.id = :id AND petsitter.isPetSitter")
     List<CommentTemplate> getCommentsByPetsitterId(@Param("id") UUID id);

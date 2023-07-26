@@ -35,12 +35,12 @@ public class User implements UserDetails {
     @Column(length = 255)
     @NotNull(message = "Le prénom ne peut pas être nul.")
     @NotBlank(message = "Le prénom ne peut pas être vide.")
-    private String firstName;
+    private String firstname;
 
     @Column(length = 255)
     @NotNull(message = "Le nom ne peut pas être nul.")
     @NotBlank(message = "Le nom ne peut pas être vide.")
-    private String lastName;
+    private String lastname;
 
     @Column(length = 255)
     private String description;
@@ -152,24 +152,24 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public @NotNull String getFirstName() {
+    public @NotNull String getFirstname() {
 
-        return firstName;
+        return firstname;
     }
 
-    public void setFirstName(@NotNull String firstName) {
+    public void setFirstname(@NotNull String firstname) {
 
-        this.firstName = firstName;
+        this.firstname = firstname;
     }
 
     public @NotNull String getLastName() {
 
-        return lastName;
+        return lastname;
     }
 
-    public void setLastName(@NotNull String lastName) {
+    public void setLastName(@NotNull String lastname) {
 
-        this.lastName = lastName;
+        this.lastname = lastname;
     }
 
     public String getDescription() {
