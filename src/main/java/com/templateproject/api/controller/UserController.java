@@ -1,6 +1,8 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.dto.*;
+import com.templateproject.api.dto.AnimalTemplate;
+import com.templateproject.api.dto.UserProfile;
+import com.templateproject.api.dto.UserProfileResponse;
 import com.templateproject.api.entity.Animal;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.AnimalRepository;
@@ -14,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -38,18 +41,15 @@ public class UserController {
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         UserProfile userProfile = this.userRepo.getUserById(user.getId());
-        List<TransactionUserTemplate> transactionTemplateList = this.transactionRepo.getTransactionsByUser(user.getId());
+        Integer countTransactionStatusNull = this.transactionRepo.countTransactionStatusNull(user.getId());
         List<AnimalTemplate> animalTemplateList = this.animalRepo.getAnimalsByUser(user.getId());
-       UserProfileResponse finalUser = new UserProfileResponse();
-      if(transactionTemplateList.size() > 0){
-            finalUser.setTransactionUserTemplateList(transactionTemplateList);
-       }
-       if(animalTemplateList.size() > 0){
-           finalUser.setAnimalTemplateList(animalTemplateList);
-       }
-       finalUser.setUserProfile(userProfile);
-    return finalUser;
-
+        UserProfileResponse finalUser = new UserProfileResponse();
+        finalUser.setNbTransactionStatusNull(countTransactionStatusNull);
+        if (animalTemplateList.size() > 0) {
+            finalUser.setAnimalTemplateList(animalTemplateList);
+        }
+        finalUser.setUserProfile(userProfile);
+        return finalUser;
     }
 
     @PutMapping("")

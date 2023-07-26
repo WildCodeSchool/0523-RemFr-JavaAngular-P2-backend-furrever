@@ -1,10 +1,11 @@
 package com.templateproject.api.controller;
 
+import com.templateproject.api.dto.GetTansactionsResponse;
+import com.templateproject.api.dto.TransactionUserTemplate;
 import com.templateproject.api.entity.Comment;
 import com.templateproject.api.entity.Transaction;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.CommentRepository;
-import com.templateproject.api.repository.ServiceRepository;
 import com.templateproject.api.repository.TransactionRepository;
 import com.templateproject.api.repository.UserRepository;
 import com.templateproject.api.service.utils.BeanUtils;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +33,27 @@ public class TransactionController {
         this.userRepo = userRepo;
     }
 
+    @GetMapping("")
+    public GetTansactionsResponse getTransaction(Principal principal) {
+        String userName = principal.getName();
+        User user = this.userRepo
+                .findByEmail(userName)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
+        GetTansactionsResponse getTansactionsResponse = new GetTansactionsResponse();
+        getTansactionsResponse.setPetsitter(user.getIsPetSitter());
+        if (user.getIsPetSitter()) {
+            List<TransactionUserTemplate> transactionForPetsitter = this.transactionRepo.getTransactionsForPetsitter(user.getId());
+            if (transactionForPetsitter.size() > 0) {
+                getTansactionsResponse.setTransationForPetsitter(transactionForPetsitter);
+            }
+        }
+        List<TransactionUserTemplate> transactionFromUser = this.transactionRepo.getTransactionsByUser(user.getId());
+        if (transactionFromUser.size() > 0) {
+            getTansactionsResponse.setTransationFromUser(transactionFromUser);
+        }
+        return getTansactionsResponse;
+    }
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Transaction createTransaction(@RequestBody Transaction transaction, Principal principal) {
@@ -43,11 +66,14 @@ public class TransactionController {
     }
 
     @PutMapping("/{transactionId}")
-    public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Transaction transactionToModify) {
-          Transaction transaction = this.transactionRepo
+    public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Transaction transactionToModify, Principal principal) {
+        User user = this.userRepo
+                .findByEmail(principal.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
+        Transaction transaction = this.transactionRepo
                 .findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été mise à jour"));
-        if ( /*current user == petsitter || */ transaction.getStatus() == null) {
+        if (transaction.getStatus() == null && transaction.getService().getUser().getId() == user.getId()) {
             BeanUtils.copyNonNullProperties(transactionToModify, transaction);
             return this.transactionRepo.save(transaction);
         } else {
@@ -56,12 +82,15 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{transactionId}")
-    public void deleteTransaction(@PathVariable UUID transactionId) {
+    public void deleteTransaction(@PathVariable UUID transactionId, Principal principal) {
+        User user = this.userRepo
+                .findByEmail(principal.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         Transaction transaction = this.transactionRepo
                 .findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été supprimée."));
-        if (transaction.getStatus() == null) {
-             this.transactionRepo.deleteById(transactionId);
+        if (transaction.getStatus() == null && transaction.getUser().getId() == user.getId()) {
+            this.transactionRepo.deleteById(transactionId);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'avez pas l'autorisation de supprimer cette transaction.");
         }
