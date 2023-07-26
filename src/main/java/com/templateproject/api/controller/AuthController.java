@@ -14,10 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
@@ -45,6 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     public User register(@RequestBody User newUser) {
         // si l'utilisateur existe déjà sur cet email
         if (this.userRepository.findByEmail(newUser.getEmail()).isPresent()) {
