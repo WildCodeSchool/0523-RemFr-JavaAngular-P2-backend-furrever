@@ -44,12 +44,12 @@ public class TransactionController {
         if (user.getIsPetSitter()) {
             List<TransactionUserTemplate> transactionForPetsitter = this.transactionRepo.getTransactionsForPetsitter(user.getId());
             if (transactionForPetsitter.size() > 0) {
-                getTansactionsResponse.setTransationForPetsitter(transactionForPetsitter);
+                getTansactionsResponse.setTransactionForPetsitter(transactionForPetsitter);
             }
         }
         List<TransactionUserTemplate> transactionFromUser = this.transactionRepo.getTransactionsByUser(user.getId());
         if (transactionFromUser.size() > 0) {
-            getTansactionsResponse.setTransationFromUser(transactionFromUser);
+            getTansactionsResponse.setTransactionFromUser(transactionFromUser);
         }
         return getTansactionsResponse;
     }
