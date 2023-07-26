@@ -12,12 +12,12 @@ import java.util.UUID;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
-    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content, s.typeService, s.price, u.firstName, u.lastName, u.email, t.service.user.firstName, t.service.user.lastName) " +
+    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content, s.typeService, s.price, u.firstname, u.lastname, u.email, t.service.user.firstname, t.service.user.lastname) " +
     "FROM Transaction t JOIN t.user u JOIN t.service s " +
     "WHERE u.id= :id")
     List<TransactionUserTemplate> getTransactionsByUser(@Param("id") UUID id);
 
-    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content, s.typeService, s.price, u.firstName, u.lastName, u.email, uPetsitter.firstName, uPetsitter.lastName) " +
+    @Query("SELECT new com.templateproject.api.dto.TransactionUserTemplate (t.id, t.dateStart, t.dateEnd, t.status, t.content, s.typeService, s.price, u.firstname, u.lastname, u.email, uPetsitter.firstname, uPetsitter.lastname) " +
             "FROM Transaction t JOIN t.service s JOIN s.user uPetsitter JOIN t.user u " +
             "WHERE uPetsitter.id= :id")
     List<TransactionUserTemplate> getTransactionsForPetsitter(@Param("id") UUID id);
