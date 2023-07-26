@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,24 +20,16 @@ public class User implements UserDetails {
     private UUID id;
 
     @Column(unique = true, length = 255)
-    @NotNull(message = "L'email ne peut pas être nul.")
-    @NotBlank(message = "L'email ne peut pas être vide.")
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull(message = "Le mot de passe ne peut pas être nul.")
-    @NotBlank(message = "Le mot de passe ne peut pas être vide.")
     @Column(length = 255)
     private String password;
 
     @Column(length = 255)
-    @NotNull(message = "Le prénom ne peut pas être nul.")
-    @NotBlank(message = "Le prénom ne peut pas être vide.")
     private String firstname;
 
     @Column(length = 255)
-    @NotNull(message = "Le nom ne peut pas être nul.")
-    @NotBlank(message = "Le nom ne peut pas être vide.")
     private String lastname;
 
     @Column(length = 255)
@@ -102,12 +92,12 @@ public class User implements UserDetails {
         this.transactions = transactions;
     }
 
-    public @NotNull String getEmail() {
+    public String getEmail() {
 
         return email;
     }
 
-    public void setEmail(@NotNull String email) {
+    public void setEmail(String email) {
 
         this.email = email;
     }
@@ -117,7 +107,7 @@ public class User implements UserDetails {
         return this.roles;
     }
 
-    public @NotNull String getPassword() {
+    public String getPassword() {
 
         return password;
     }
@@ -147,27 +137,27 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setPassword(@NotNull String password) {
+    public void setPassword(String password) {
 
         this.password = password;
     }
 
-    public @NotNull String getFirstname() {
+    public String getFirstname() {
 
         return firstname;
     }
 
-    public void setFirstname(@NotNull String firstname) {
+    public void setFirstname(String firstname) {
 
         this.firstname = firstname;
     }
 
-    public @NotNull String getLastName() {
+    public String getLastName() {
 
         return lastname;
     }
 
-    public void setLastName(@NotNull String lastname) {
+    public void setLastname(String lastname) {
 
         this.lastname = lastname;
     }
