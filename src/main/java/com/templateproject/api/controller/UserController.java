@@ -1,6 +1,7 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.dto.AnimalTemplate;
+import com.templateproject.api.dto.ServiceTemplate;
 import com.templateproject.api.dto.UserProfile;
 import com.templateproject.api.dto.UserProfileResponse;
 import com.templateproject.api.entity.Animal;
@@ -46,6 +47,10 @@ public class UserController {
         Integer countTransactionStatusNull = this.transactionRepo.countTransactionStatusNull(user.getId());
         List<AnimalTemplate> animalTemplateList = this.animalRepo.getAnimalsByUser(user.getId());
         UserProfileResponse finalUser = new UserProfileResponse();
+        if (user.getIsPetSitter()){
+            List<ServiceTemplate> serviceTemplateList = this.serviceRepo.getServicesByPetsitterId(user.getId());
+            finalUser.setServiceTemplateList(serviceTemplateList);
+        }
         finalUser.setNbTransactionStatusNull(countTransactionStatusNull);
         if (animalTemplateList.size() > 0) {
             finalUser.setAnimalTemplateList(animalTemplateList);
