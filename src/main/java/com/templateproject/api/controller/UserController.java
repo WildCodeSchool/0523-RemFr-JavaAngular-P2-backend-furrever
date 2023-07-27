@@ -1,9 +1,6 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.dto.AnimalTemplate;
-import com.templateproject.api.dto.ServiceTemplate;
-import com.templateproject.api.dto.UserProfile;
-import com.templateproject.api.dto.UserProfileResponse;
+import com.templateproject.api.dto.*;
 import com.templateproject.api.entity.Animal;
 import com.templateproject.api.entity.Location;
 import com.templateproject.api.entity.User;
@@ -26,15 +23,15 @@ public class UserController {
     private final AnimalRepository animalRepo;
     private final TransactionRepository transactionRepo;
     private final ServiceRepository serviceRepo;
-    private final RoleRepository roleRepo;
     private final LocationRepository locationRepo;
+    private final CommentRepository commentRepo;
 
-    public UserController(UserRepository userRepository, AnimalRepository animalRepository, TransactionRepository transactionRepo, ServiceRepository serviceRepo, RoleRepository roleRepo, LocationRepository locationRepo) {
+    public UserController(UserRepository userRepository, AnimalRepository animalRepository, TransactionRepository transactionRepo, ServiceRepository serviceRepo, LocationRepository locationRepo, CommentRepository commentRepo) {
         this.userRepo = userRepository;
         this.animalRepo = animalRepository;
         this.transactionRepo = transactionRepo;
         this.serviceRepo = serviceRepo;
-        this.roleRepo = roleRepo;
+        this.commentRepo = commentRepo;
         this.locationRepo = locationRepo;
     }
 
@@ -50,6 +47,8 @@ public class UserController {
         if (user.getIsPetSitter()){
             List<ServiceTemplate> serviceTemplateList = this.serviceRepo.getServicesByPetsitterId(user.getId());
             finalUser.setServiceTemplateList(serviceTemplateList);
+            List<CommentTemplate> commentTemplateList = this.commentRepo.getCommentsByPetsitterId(user.getId());
+            finalUser.setCommentTemplateList(commentTemplateList);
         }
         finalUser.setNbTransactionStatusNull(countTransactionStatusNull);
         if (animalTemplateList.size() > 0) {
