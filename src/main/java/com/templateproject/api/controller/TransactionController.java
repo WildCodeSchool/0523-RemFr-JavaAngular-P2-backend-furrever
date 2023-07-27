@@ -66,15 +66,15 @@ public class TransactionController {
     }
 
     @PutMapping("/{transactionId}")
-    public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Transaction transactionToModify, Principal principal) {
+    public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Boolean validation, Principal principal) {
         User user = this.userRepo
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         Transaction transaction = this.transactionRepo
                 .findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été mise à jour"));
-        if (transaction.getStatus() == null && transaction.getService().getUser().getId() == user.getId()) {
-            BeanUtils.copyNonNullProperties(transactionToModify, transaction);
+        if (validation != null && user.getId() == transaction.getService().getUser().getId()) {
+            transaction.setStatus(validation);
             return this.transactionRepo.save(transaction);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'avez pas l'autorisation de modifier cette transaction.");
