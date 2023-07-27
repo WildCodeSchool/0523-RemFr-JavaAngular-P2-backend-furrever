@@ -77,11 +77,11 @@ public class UserProfile {
         this.description = description;
     }
 
-    public Boolean getPetSitter() {
+    public Boolean getIsPetSitter() {
         return isPetSitter;
     }
 
-    public void setPetSitter(Boolean petSitter) {
+    public void setIsPetSitter(Boolean petSitter) {
         isPetSitter = petSitter;
     }
 
