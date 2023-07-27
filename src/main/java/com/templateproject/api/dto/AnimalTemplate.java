@@ -1,9 +1,7 @@
 package com.templateproject.api.dto;
 
-import com.templateproject.api.entity.Species;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -12,7 +10,7 @@ public class AnimalTemplate {
     private UUID idAnimal;
     private String firstname;
     private LocalDate birthday;
-    private float weight;
+    private Float weight;
     private String description;
     private String species;
 
@@ -52,11 +50,11 @@ public class AnimalTemplate {
         this.birthday = birthday;
     }
 
-    public float getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(Float weight) {
         this.weight = weight;
     }
 

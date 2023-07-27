@@ -4,12 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.UUID;
-
 
 @Entity
 @JsonIdentityInfo(
@@ -20,11 +17,9 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(length = 255)
-    @NotNull(message = "Le prénom ne peut pas être nul.")
-    @NotBlank(message = "Le prénom ne peut pas être vide.")
+
     private String firstname;
 
-    @NotNull(message = "La date de naissance ne peut pas être nulle.")
     private LocalDate birthday;
 
     private Float weight;
@@ -50,19 +45,19 @@ public class Animal {
         this.id = id;
     }
 
-    public @NotNull String getFirstname() {
+    public  String getFirstname() {
         return firstname;
     }
 
-    public void setFirstname(@NotNull String firstname) {
+    public void setFirstname( String firstname) {
         this.firstname = firstname;
     }
 
-    public @NotNull LocalDate getBirthday() {
+    public  LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(@NotNull LocalDate birthday) {
+    public void setBirthday( LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -98,4 +93,3 @@ public class Animal {
         this.user = user;
     }
 }
-
