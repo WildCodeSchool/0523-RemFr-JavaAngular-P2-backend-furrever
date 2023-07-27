@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetTansactionsResponse {
-    private List<TransactionUserTemplate> transationForPetsitter = new ArrayList<>();
-    private List<TransactionUserTemplate> transationFromUser = new ArrayList<>();
+    private List<TransactionUserTemplate> transactionForPetsitter = new ArrayList<>();
+    private List<TransactionUserTemplate> transactionFromUser = new ArrayList<>();
     private Boolean petsitter;
 
     public GetTansactionsResponse() {
     }
 
-    public List<TransactionUserTemplate> getTransationForPetsitter() {
-        return transationForPetsitter;
+    public List<TransactionUserTemplate> getTransactionForPetsitter() {
+        return transactionForPetsitter;
     }
 
-    public void setTransationForPetsitter(List<TransactionUserTemplate> transationForPetsitter) {
-        this.transationForPetsitter = transationForPetsitter;
+    public void setTransactionForPetsitter(List<TransactionUserTemplate> transactionForPetsitter) {
+        this.transactionForPetsitter = transactionForPetsitter;
     }
 
-    public List<TransactionUserTemplate> getTransationFromUser() {
-        return transationFromUser;
+    public List<TransactionUserTemplate> getTransactionFromUser() {
+        return transactionFromUser;
     }
 
-    public void setTransationFromUser(List<TransactionUserTemplate> transationFromUser) {
-        this.transationFromUser = transationFromUser;
+    public void setTransactionFromUser(List<TransactionUserTemplate> transactionFromUser) {
+        this.transactionFromUser = transactionFromUser;
     }
 
     public Boolean getPetsitter() {
