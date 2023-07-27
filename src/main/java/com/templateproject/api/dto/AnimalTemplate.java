@@ -14,7 +14,7 @@ public class AnimalTemplate {
     private String description;
     private String species;
 
-    public AnimalTemplate(UUID idAnimal, String firstname, LocalDate birthday, float weight, String description, String species) {
+    public AnimalTemplate(UUID idAnimal, String firstname, LocalDate birthday, Float weight, String description, String species) {
         this.idAnimal = idAnimal;
         this.firstname = firstname;
         this.birthday = birthday;
