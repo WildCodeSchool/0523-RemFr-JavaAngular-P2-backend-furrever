@@ -14,6 +14,7 @@ import java.security.Principal;
 import java.util.UUID;
 
 @RestController
+@PreAuthorize("hasAnyAuthority('SCOPE_ROLE_USER', 'SCOPE_ROLE_PETSITTER')")
 @RequestMapping("/api/services")
 public class ServiceController {
 
@@ -39,7 +40,6 @@ public class ServiceController {
     }
 
     @PutMapping("/{serviceId}")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
     public Service updateService(Principal principal, @PathVariable UUID serviceId, @RequestBody Service serviceToModify) {
         Service serviceInBdd = this.serviceRepo
                 .findById(serviceId)
@@ -58,7 +58,6 @@ public class ServiceController {
     }
 
     @DeleteMapping("/{serviceId}")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
     public void deleteService(Principal principal, @PathVariable UUID serviceId) {
         User petsitter = this.userRepo
                 .findByEmail(principal.getName())
