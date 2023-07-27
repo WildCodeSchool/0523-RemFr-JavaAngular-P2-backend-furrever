@@ -61,14 +61,11 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         userToModify.setRoles(null);
         BeanUtils.copyNonNullProperties(userToModify, user);
-        if(userToModify.getLocation() != null){
-            //charger objet location by id
+        if (userToModify.getLocation() != null) {
             Location location = this.locationRepo
                     .findById(userToModify.getLocation().getId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette adresse n'a pas été trouvée."));
-            //beanutils to copy
             BeanUtils.copyNonNullProperties(userToModify.getLocation(), location);
-            //utiliser locationrepo pour save
             this.locationRepo.save(location);
         }
         return this.userRepo.save(user);
