@@ -4,6 +4,7 @@ import com.templateproject.api.dto.AnimalTemplate;
 import com.templateproject.api.dto.UserProfile;
 import com.templateproject.api.dto.UserProfileResponse;
 import com.templateproject.api.entity.Animal;
+import com.templateproject.api.entity.Location;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.*;
 import com.templateproject.api.service.utils.BeanUtils;
@@ -25,13 +26,15 @@ public class UserController {
     private final TransactionRepository transactionRepo;
     private final ServiceRepository serviceRepo;
     private final RoleRepository roleRepo;
+    private final LocationRepository locationRepo;
 
-    public UserController(UserRepository userRepository, AnimalRepository animalRepository, TransactionRepository transactionRepo, ServiceRepository serviceRepo, RoleRepository roleRepo) {
+    public UserController(UserRepository userRepository, AnimalRepository animalRepository, TransactionRepository transactionRepo, ServiceRepository serviceRepo, RoleRepository roleRepo, LocationRepository locationRepo) {
         this.userRepo = userRepository;
         this.animalRepo = animalRepository;
         this.transactionRepo = transactionRepo;
         this.serviceRepo = serviceRepo;
         this.roleRepo = roleRepo;
+        this.locationRepo = locationRepo;
     }
 
     @GetMapping("")
@@ -58,7 +61,13 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         userToModify.setRoles(null);
         BeanUtils.copyNonNullProperties(userToModify, user);
-
+        if (userToModify.getLocation() != null) {
+            Location location = this.locationRepo
+                    .findById(userToModify.getLocation().getId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette adresse n'a pas été trouvée."));
+            BeanUtils.copyNonNullProperties(userToModify.getLocation(), location);
+            this.locationRepo.save(location);
+        }
         return this.userRepo.save(user);
     }
 
