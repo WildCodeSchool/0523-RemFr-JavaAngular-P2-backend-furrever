@@ -26,7 +26,6 @@ public class ServiceController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_PETSITTER')")
     @ResponseStatus(HttpStatus.CREATED)
     public Service createService(Principal principal, @RequestBody Service service) {
         User petsitter = this.userRepo
