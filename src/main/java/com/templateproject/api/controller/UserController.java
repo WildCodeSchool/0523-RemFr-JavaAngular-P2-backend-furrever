@@ -4,7 +4,6 @@ import com.templateproject.api.dto.AnimalTemplate;
 import com.templateproject.api.dto.UserProfile;
 import com.templateproject.api.dto.UserProfileResponse;
 import com.templateproject.api.entity.Animal;
-import com.templateproject.api.entity.Role;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.*;
 import com.templateproject.api.service.utils.BeanUtils;
@@ -15,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
