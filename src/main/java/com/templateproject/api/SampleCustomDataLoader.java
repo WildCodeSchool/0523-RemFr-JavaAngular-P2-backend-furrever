@@ -116,13 +116,13 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         List<User> userList = IntStream.rangeClosed(1, 1000)
                 .mapToObj(i -> {
                     Collections.shuffle(this.pictures);
-                    String firstName = this.faker.name().firstName();
-                    String lastName = this.faker.name().lastName();
+                    String firstname = this.faker.name().firstName();
+                    String lastname = this.faker.name().lastName();
                     User user = new User();
-                    user.setFirstName(firstName);
-                    user.setLastName(lastName);
+                    user.setFirstname(firstname);
+                    user.setLastname(lastname);
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
-                    user.setEmail(firstName + lastName + this.faker.random().nextInt(1, 10000000) + "@api.com");
+                    user.setEmail(firstname + lastname + this.faker.random().nextInt(1, 10000000) + "@api.com");
                     user.setPicture(this.pictures.get(0));
                     user.setPassword(passwordEncoder.encode("password"));
                     user.setLocation(locationList.get(0));
@@ -138,13 +138,13 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         List<User> userList = IntStream.rangeClosed(1, 500)
                 .mapToObj(i -> {
                     Collections.shuffle(this.pictures);
-                    String firstName = this.faker.name().firstName();
-                    String lastName = this.faker.name().lastName();
+                    String firstname = this.faker.name().firstName();
+                    String lastname = this.faker.name().lastName();
                     User user = new User();
-                    user.setFirstName(firstName);
-                    user.setLastName(lastName);
+                    user.setFirstname(firstname);
+                    user.setLastname(lastname);
                     user.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis");
-                    user.setEmail(firstName + lastName + this.faker.random().nextInt(1, 10000000) + "@api.com");
+                    user.setEmail(firstname + lastname + this.faker.random().nextInt(1, 10000000) + "@api.com");
                     user.setPicture(this.pictures.get(0));
                     user.setPassword(passwordEncoder.encode("password"));
                     user.setIsPetSitter(true);
@@ -181,7 +181,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
                     long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
                     LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
                     Animal animal = new Animal();
-                    animal.setFirstName(this.faker.gameOfThrones().character());
+                    animal.setFirstname(this.faker.gameOfThrones().character());
                     animal.setBirthday(randomDate);
                     animal.setWeight((float) this.faker.number().numberBetween((int) 1.5, (int) 120.0));
                     animal.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.");

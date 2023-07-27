@@ -44,12 +44,12 @@ public class TransactionController {
         if (user.getIsPetSitter()) {
             List<TransactionUserTemplate> transactionForPetsitter = this.transactionRepo.getTransactionsForPetsitter(user.getId());
             if (transactionForPetsitter.size() > 0) {
-                getTansactionsResponse.setTransationForPetsitter(transactionForPetsitter);
+                getTansactionsResponse.setTransactionForPetsitter(transactionForPetsitter);
             }
         }
         List<TransactionUserTemplate> transactionFromUser = this.transactionRepo.getTransactionsByUser(user.getId());
         if (transactionFromUser.size() > 0) {
-            getTansactionsResponse.setTransationFromUser(transactionFromUser);
+            getTansactionsResponse.setTransactionFromUser(transactionFromUser);
         }
         return getTansactionsResponse;
     }
@@ -66,15 +66,15 @@ public class TransactionController {
     }
 
     @PutMapping("/{transactionId}")
-    public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Transaction transactionToModify, Principal principal) {
+    public Transaction updateTransaction(@PathVariable UUID transactionId, @RequestBody Boolean validation, Principal principal) {
         User user = this.userRepo
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         Transaction transaction = this.transactionRepo
                 .findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été mise à jour"));
-        if (transaction.getStatus() == null && transaction.getService().getUser().getId() == user.getId()) {
-            BeanUtils.copyNonNullProperties(transactionToModify, transaction);
+        if (validation != null && user.getId() == transaction.getService().getUser().getId()) {
+            transaction.setStatus(validation);
             return this.transactionRepo.save(transaction);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'avez pas l'autorisation de modifier cette transaction.");
@@ -82,15 +82,16 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{transactionId}")
-    public void deleteTransaction(@PathVariable UUID transactionId, Principal principal) {
+    public void deleteTransaction(@PathVariable String transactionId, Principal principal) {
+        UUID transactionUUID = UUID.fromString(transactionId);
         User user = this.userRepo
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Votre utilisateur n'a pas été trouvé."));
         Transaction transaction = this.transactionRepo
-                .findById(transactionId)
+                .findById(transactionUUID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été supprimée."));
         if (transaction.getStatus() == null && transaction.getUser().getId() == user.getId()) {
-            this.transactionRepo.deleteById(transactionId);
+            this.transactionRepo.deleteById(transactionUUID);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'avez pas l'autorisation de supprimer cette transaction.");
         }

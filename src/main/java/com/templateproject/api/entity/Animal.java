@@ -17,7 +17,8 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(length = 255)
-    private String firstName;
+
+    private String firstname;
 
     private LocalDate birthday;
 
@@ -44,12 +45,12 @@ public class Animal {
         this.id = id;
     }
 
-    public  String getFirstName() {
-        return firstName;
+    public  String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName( String firstName) {
-        this.firstName = firstName;
+    public void setFirstname( String firstname) {
+        this.firstname = firstname;
     }
 
     public  LocalDate getBirthday() {
@@ -92,4 +93,3 @@ public class Animal {
         this.user = user;
     }
 }
-

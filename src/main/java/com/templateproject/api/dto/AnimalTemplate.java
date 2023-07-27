@@ -8,15 +8,15 @@ import java.util.UUID;
 @Component
 public class AnimalTemplate {
     private UUID idAnimal;
-    private String firstName;
+    private String firstname;
     private LocalDate birthday;
     private Float weight;
     private String description;
     private String species;
 
-    public AnimalTemplate(UUID idAnimal, String firstName, LocalDate birthday, Float weight, String description, String species) {
+    public AnimalTemplate(UUID idAnimal, String firstname, LocalDate birthday, float weight, String description, String species) {
         this.idAnimal = idAnimal;
-        this.firstName = firstName;
+        this.firstname = firstname;
         this.birthday = birthday;
         this.weight = weight;
         this.description = description;
@@ -34,12 +34,12 @@ public class AnimalTemplate {
         this.idAnimal = idAnimal;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public LocalDate getBirthday() {
