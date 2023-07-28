@@ -28,7 +28,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(String email);
 
     @Query("SELECT new com.templateproject.api.dto.SearchResponse(u.id, u.email, u.firstname, u.lastname, u.description, u.picture, MIN(s.price), CAST(AVG(c.note) AS int), CAST(COUNT(c.note) AS int)) " +
-            "FROM User u JOIN u.services s JOIN s.speciesList sp JOIN u.location l  JOIN s.transactions t JOIN t.comment c " +
+            "FROM User u JOIN u.services s JOIN s.speciesList sp JOIN u.location l  LEFT JOIN s.transactions t LEFT JOIN t.comment c " +
             "WHERE u.isPetSitter AND l.city = :city AND s.typeService = :typeService AND sp.name IN :speciesList GROUP BY u.id ORDER BY MIN(s.price) ASC ")
     List<SearchResponse> getPetSitterBySearch(@Param("city") String city, @Param("typeService") String typeService, @Param("speciesList") List<String> speciesList);
 }
