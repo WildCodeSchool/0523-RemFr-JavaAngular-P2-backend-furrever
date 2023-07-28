@@ -1,8 +1,10 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.Service;
+import com.templateproject.api.entity.Transaction;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.ServiceRepository;
+import com.templateproject.api.repository.TransactionRepository;
 import com.templateproject.api.repository.UserRepository;
 import com.templateproject.api.service.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,10 +23,12 @@ public class ServiceController {
 
     private final ServiceRepository serviceRepo;
     private final UserRepository userRepo;
+    private final TransactionRepository transactionRepo;
 
-    public ServiceController(ServiceRepository serviceRepo, UserRepository userRepo) {
+    public ServiceController(ServiceRepository serviceRepo, UserRepository userRepo, TransactionRepository transactionRepo) {
         this.serviceRepo = serviceRepo;
         this.userRepo = userRepo;
+        this.transactionRepo = transactionRepo;
     }
 
     @PostMapping("")
@@ -66,11 +71,11 @@ public class ServiceController {
         Service serviceInBdd = this.serviceRepo
                 .findById(serviceId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le service n'a pas été supprimé."));
-
-        if (petsitter.getServices().contains(serviceInBdd)) {
+        Integer nbTransaction = this.transactionRepo.countTransactionByServiceId(serviceInBdd.getId());
+        if (petsitter.getServices().contains(serviceInBdd) && nbTransaction == 0 ) {
             this.serviceRepo.deleteById(serviceId);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ce service ne vous appartient pas, vous ne pouvez pas le supprimer.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Ce service possède une transaction ou ne vous appartient pas, vous ne pouvez pas le supprimer.");
         }
     }
 }

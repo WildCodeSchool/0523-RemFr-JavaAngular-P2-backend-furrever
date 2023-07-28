@@ -26,4 +26,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "JOIN t.service s JOIN s.user u " +
             "WHERE u.id = :id AND t.status IS NULL")
     Integer countTransactionStatusNull(@Param("id") UUID id);
+
+    Integer countTransactionByServiceId(UUID id);
 }
