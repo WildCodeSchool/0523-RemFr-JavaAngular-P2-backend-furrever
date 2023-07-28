@@ -113,7 +113,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
 
     private List<User> userData(List<Location> locationList) {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        List<User> userList = IntStream.rangeClosed(1, 1000)
+        List<User> userList = IntStream.rangeClosed(1, 600)
                 .mapToObj(i -> {
                     Collections.shuffle(this.pictures);
                     String firstname = this.faker.name().firstName();
@@ -135,7 +135,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
 
     private List<User> petsitterData(List<Location> locationList) {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        List<User> userList = IntStream.rangeClosed(1, 500)
+        List<User> userList = IntStream.rangeClosed(1, 300)
                 .mapToObj(i -> {
                     Collections.shuffle(this.pictures);
                     String firstname = this.faker.name().firstName();
@@ -157,7 +157,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
     }
 
     private List<Location> locationData() {
-        List<Location> locationList = IntStream.rangeClosed(1, 1500)
+        List<Location> locationList = IntStream.rangeClosed(1, 1000)
                 .mapToObj(i -> {
                     Collections.shuffle(this.cities);
                     Location location = new Location();
@@ -215,7 +215,7 @@ public class SampleCustomDataLoader implements CommandLineRunner {
         listOfSpeciesList.add(speciesList2);
         listOfSpeciesList.add(speciesList3);
         listOfSpeciesList.add(speciesList4);
-        List<Service> serviceList = IntStream.rangeClosed(1, 4000)
+        List<Service> serviceList = IntStream.rangeClosed(1, 1000)
                 .mapToObj(i -> {
                     Collections.shuffle(petsitterList);
                     Collections.shuffle(listOfSpeciesList);
@@ -249,7 +249,6 @@ public class SampleCustomDataLoader implements CommandLineRunner {
                     transaction.setStatus(this.faker.random().nextBoolean());
                     transaction.setUser(userList.get(0));
                     transaction.setService(serviceList.get(0));
-                    serviceList.remove(0);
                     return transaction;
                 })
                 .collect(Collectors.toList());
