@@ -34,4 +34,5 @@ public class GetTansactionsResponse {
     public void setPetsitter(Boolean petsitter) {
         this.petsitter = petsitter;
     }
+
 }
