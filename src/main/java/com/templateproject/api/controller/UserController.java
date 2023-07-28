@@ -54,6 +54,8 @@ public class UserController {
         if (animalTemplateList.size() > 0) {
             finalUser.setAnimalTemplateList(animalTemplateList);
         }
+        List<CommentTemplate> commentTemplateListIfIAmUser = this.commentRepo.getCommentsByUserId(user.getId());
+        finalUser.setCommentTemplateListIfIAmUser(commentTemplateListIfIAmUser);
         finalUser.setUserProfile(userProfile);
         return finalUser;
     }
