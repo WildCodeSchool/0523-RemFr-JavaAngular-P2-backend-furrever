@@ -49,6 +49,12 @@ public class TransactionController {
         List<TransactionUserTemplate> transactionFromUser = this.transactionRepo.getTransactionsByUser(user.getId());
         if (transactionFromUser.size() > 0) {
             getTansactionsResponse.setTransactionFromUser(transactionFromUser);
+            for (TransactionUserTemplate transactionUserTemplate : transactionFromUser){
+                Comment comment = this.commentRepo.getCommentByTransactionId(transactionUserTemplate.getIdTransaction());
+                if (comment != null){
+                    transactionUserTemplate.setCommentedTransaction(true);
+                }
+            }
         }
         return getTansactionsResponse;
     }
@@ -98,7 +104,11 @@ public class TransactionController {
 
     @PostMapping("/{transactionId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public Comment createComment(@RequestBody Comment comment) {
+    public Comment createComment(@RequestBody Comment comment, @PathVariable UUID transactionId){
+        Transaction transaction = this.transactionRepo
+                .findById(transactionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cette transaction n'a pas été trouvée."));
+        comment.setTransaction(transaction);
         return this.commentRepo.save(comment);
     }
 
