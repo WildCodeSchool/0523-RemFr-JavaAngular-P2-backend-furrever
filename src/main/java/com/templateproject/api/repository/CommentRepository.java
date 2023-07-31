@@ -22,4 +22,9 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
     List<CommentTemplate> getCommentsByPetsitterId(@Param("id") UUID id);
 
     Comment getCommentByTransactionId(UUID id);
+
+    @Query("SELECT new com.templateproject.api.dto.CommentTemplate (c.content, c.date, c.note, u.firstname, u.lastname ) " +
+            "FROM Comment c JOIN c.transaction t JOIN t.user u " +
+            "WHERE u.id = :id ")
+    List<CommentTemplate> getAllByTransactionUserId(@Param("id") UUID id);
 }

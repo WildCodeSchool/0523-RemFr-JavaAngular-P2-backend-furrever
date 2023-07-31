@@ -13,13 +13,15 @@ public class UserProfileResponse {
     private Integer nbTransactionStatusNull;
     private List<ServiceTemplate> serviceTemplateList = new ArrayList<>();
     private List<CommentTemplate> commentTemplateList = new ArrayList<>();
+    private List<CommentTemplate> myCommentList = new ArrayList<>();
 
-    public UserProfileResponse(UserProfile userProfile, List<AnimalTemplate> animalTemplateList, Integer nbTransactionStatusNull, List<ServiceTemplate> serviceTemplateList, List<CommentTemplate> commentTemplateList) {
+    public UserProfileResponse(UserProfile userProfile, List<CommentTemplate> myCommentList, List<AnimalTemplate> animalTemplateList, Integer nbTransactionStatusNull, List<ServiceTemplate> serviceTemplateList, List<CommentTemplate> commentTemplateList) {
         this.userProfile = userProfile;
         this.animalTemplateList = animalTemplateList;
         this.nbTransactionStatusNull = nbTransactionStatusNull;
         this.serviceTemplateList = serviceTemplateList;
         this.commentTemplateList = commentTemplateList;
+        this.myCommentList = myCommentList;
     }
 
     public UserProfileResponse() {
@@ -63,5 +65,13 @@ public class UserProfileResponse {
 
     public void setCommentTemplateList(List<CommentTemplate> commentTemplateList) {
         this.commentTemplateList = commentTemplateList;
+    }
+
+    public List<CommentTemplate> getMyCommentList() {
+        return myCommentList;
+    }
+
+    public void setMyCommentList(List<CommentTemplate> myCommentList) {
+        this.myCommentList = myCommentList;
     }
 }
