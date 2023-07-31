@@ -43,6 +43,7 @@ public class UserController {
         UserProfile userProfile = this.userRepo.getUserById(user.getId());
         Integer countTransactionStatusNull = this.transactionRepo.countTransactionStatusNull(user.getId());
         List<AnimalTemplate> animalTemplateList = this.animalRepo.getAnimalsByUser(user.getId());
+        List<CommentTemplate> myCommentList = this.commentRepo.getAllByTransactionUserId(user.getId());
         UserProfileResponse finalUser = new UserProfileResponse();
         if (user.getIsPetSitter()){
             List<ServiceTemplate> serviceTemplateList = this.serviceRepo.getServicesByPetsitterId(user.getId());
@@ -51,10 +52,11 @@ public class UserController {
             finalUser.setCommentTemplateList(commentTemplateList);
         }
         finalUser.setNbTransactionStatusNull(countTransactionStatusNull);
-        if (animalTemplateList.size() > 0) {
+        if (!animalTemplateList.isEmpty()) {
             finalUser.setAnimalTemplateList(animalTemplateList);
         }
         finalUser.setUserProfile(userProfile);
+        finalUser.setMyCommentList(myCommentList);
         return finalUser;
     }
 
